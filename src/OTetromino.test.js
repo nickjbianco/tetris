@@ -66,4 +66,9 @@ describe("O Tetromino", () => {
       { row: 1, column: 1 },
     ]);
   });
+
+  it("Renders with color yellow", () => {
+    const OShape = new OTetromino();
+    expect(OShape.color).toEqual("yellow");
+  });
 });

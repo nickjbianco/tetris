@@ -6,6 +6,7 @@ export default class OTetromino {
       { row: 1, column: 0 },
       { row: 1, column: 1 },
     ];
+    this.color = "yellow";
   }
 
   moveDown() {
