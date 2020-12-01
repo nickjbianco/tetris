@@ -15,6 +15,7 @@ export default class Game {
     this.droppedPieces = [];
     this.stage = stage;
     this.gameOver = false;
+    this.currentScore = 0;
   }
 
   render() {
@@ -63,6 +64,16 @@ export default class Game {
     return fullRows;
   }
 
+  calculateScore() {
+    // Each line cleared is 100 points, except if you clear 4 at once,
+    // That is called a 'Tetris' in which you received 800 points.
+    const fullRows = this.calculateCompletedRows();
+    const numLinesCleared = fullRows.length;
+    const numPoints =
+      numLinesCleared < 4 ? numLinesCleared * 100 : numLinesCleared * 200;
+    this.currentScore += numPoints;
+  }
+
   clearGameBoardRows(gameBoardRowIndices) {
     gameBoardRowIndices.forEach((rowIdx) => {
       this.gameBoard[rowIdx] = new Array(10).fill("black");
@@ -86,5 +97,57 @@ export default class Game {
         this.gameOver = true;
       }
     });
+  }
+
+  currentPieceDefaultMove() {
+    setInterval(() => {
+      if (!this.isCurrentPieceStuck()) {
+        this.clearOldTetrominoPosition();
+        this.currentPiece.moveDown();
+        this.updateGrid();
+        this.render();
+      } else {
+        this.createNewPiece();
+      }
+    }, 500);
+  }
+
+  executeMove(e) {
+    if (e.keyCode === 39 && this.currentPiece.validMoveRight()) {
+      this.clearOldTetrominoPosition();
+      this.currentPiece.moveRight();
+    } else if (e.keyCode === 37 && this.currentPiece.validMoveLeft()) {
+      this.clearOldTetrominoPosition();
+      this.currentPiece.moveLeft();
+    } else if (
+      e.keyCode === 40 &&
+      this.currentPiece.validMoveDown(this.gameBoard)
+    ) {
+      this.clearOldTetrominoPosition();
+      this.currentPiece.moveDown();
+    }
+
+    this.updateGrid();
+    this.render();
+  }
+
+  handleCurrentPieceStuck() {
+    if (this.isCurrentPieceStuck()) {
+      const completedRows = this.calculateCompletedRows();
+      if (completedRows.length > 0) {
+        this.droppedPieces.forEach((droppedPiece) => {
+          droppedPiece.clearCoordinates(completedRows);
+        });
+        this.calculateScore();
+        this.clearGameBoardRows(completedRows);
+      }
+
+      this.createNewPiece();
+      this.updateGrid();
+      setTimeout(() => {
+        this.render();
+      }, 300);
+      console.log(this);
+    }
   }
 }
