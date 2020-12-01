@@ -14,6 +14,7 @@ export default class Game {
     this.currentPiece = null;
     this.droppedPieces = [];
     this.stage = stage;
+    this.gameOver = false;
   }
 
   render() {
@@ -41,8 +42,8 @@ export default class Game {
     this.createNewPiece();
   }
 
-  isCurrentPieceStuck(gameBoard) {
-    return !this.currentPiece.validMoveDown(gameBoard);
+  isCurrentPieceStuck() {
+    return !this.currentPiece.validMoveDown(this.gameBoard);
   }
 
   createNewPiece() {
@@ -65,6 +66,25 @@ export default class Game {
   clearGameBoardRows(gameBoardRowIndices) {
     gameBoardRowIndices.forEach((rowIdx) => {
       this.gameBoard[rowIdx] = new Array(10).fill("black");
+    });
+  }
+
+  clearOldTetrominoPosition() {
+    this.currentPiece.coordinates.forEach((coordinate) => {
+      const { row, column } = coordinate;
+      this.gameBoard[row][column] = "black";
+    });
+  }
+
+  checkGameOver() {
+    const topSideCoordinates = this.currentPiece.coordinates.filter(
+      (coordinate) => coordinate.side.includes("top")
+    );
+    topSideCoordinates.forEach((topSideCoordinate) => {
+      const { row } = topSideCoordinate;
+      if (this.isCurrentPieceStuck() && row === 0) {
+        this.gameOver = true;
+      }
     });
   }
 }

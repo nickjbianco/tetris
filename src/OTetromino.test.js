@@ -4,10 +4,10 @@ describe("O Tetromino", () => {
   it("Starts with coordinates array", () => {
     const OShape = new OTetromino();
     expect(OShape.coordinates).toEqual([
-      { row: 0, column: 0, side: ["top", "left"] },
-      { row: 0, column: 1, side: ["top", "right"] },
-      { row: 1, column: 0, side: ["bottom", "left"] },
-      { row: 1, column: 1, side: ["bottom", "right"] },
+      { row: 0, column: 4, side: ["top", "left"] },
+      { row: 0, column: 5, side: ["top", "right"] },
+      { row: 1, column: 4, side: ["bottom", "left"] },
+      { row: 1, column: 5, side: ["bottom", "right"] },
     ]);
   });
 
@@ -15,10 +15,10 @@ describe("O Tetromino", () => {
     const OShape = new OTetromino();
     OShape.moveDown();
     expect(OShape.coordinates).toEqual([
-      { row: 1, column: 0, side: ["top", "left"] },
-      { row: 1, column: 1, side: ["top", "right"] },
-      { row: 2, column: 0, side: ["bottom", "left"] },
-      { row: 2, column: 1, side: ["bottom", "right"] },
+      { row: 1, column: 4, side: ["top", "left"] },
+      { row: 1, column: 5, side: ["top", "right"] },
+      { row: 2, column: 4, side: ["bottom", "left"] },
+      { row: 2, column: 5, side: ["bottom", "right"] },
     ]);
   });
 
@@ -26,10 +26,10 @@ describe("O Tetromino", () => {
     const OShape = new OTetromino();
     OShape.moveRight();
     expect(OShape.coordinates).toEqual([
-      { row: 0, column: 1, side: ["top", "left"] },
-      { row: 0, column: 2, side: ["top", "right"] },
-      { row: 1, column: 1, side: ["bottom", "left"] },
-      { row: 1, column: 2, side: ["bottom", "right"] },
+      { row: 0, column: 5, side: ["top", "left"] },
+      { row: 0, column: 6, side: ["top", "right"] },
+      { row: 1, column: 5, side: ["bottom", "left"] },
+      { row: 1, column: 6, side: ["bottom", "right"] },
     ]);
   });
 
@@ -38,10 +38,10 @@ describe("O Tetromino", () => {
     OShape.moveRight();
     OShape.moveLeft();
     expect(OShape.coordinates).toEqual([
-      { row: 0, column: 0, side: ["top", "left"] },
-      { row: 0, column: 1, side: ["top", "right"] },
-      { row: 1, column: 0, side: ["bottom", "left"] },
-      { row: 1, column: 1, side: ["bottom", "right"] },
+      { row: 0, column: 4, side: ["top", "left"] },
+      { row: 0, column: 5, side: ["top", "right"] },
+      { row: 1, column: 4, side: ["bottom", "left"] },
+      { row: 1, column: 5, side: ["bottom", "right"] },
     ]);
   });
 
@@ -49,10 +49,10 @@ describe("O Tetromino", () => {
     const OShape = new OTetromino();
     OShape.rotateRight();
     expect(OShape.coordinates).toEqual([
-      { row: 0, column: 0, side: ["top", "left"] },
-      { row: 0, column: 1, side: ["top", "right"] },
-      { row: 1, column: 0, side: ["bottom", "left"] },
-      { row: 1, column: 1, side: ["bottom", "right"] },
+      { row: 0, column: 4, side: ["top", "left"] },
+      { row: 0, column: 5, side: ["top", "right"] },
+      { row: 1, column: 4, side: ["bottom", "left"] },
+      { row: 1, column: 5, side: ["bottom", "right"] },
     ]);
   });
 
@@ -60,10 +60,10 @@ describe("O Tetromino", () => {
     const OShape = new OTetromino();
     OShape.rotateLeft();
     expect(OShape.coordinates).toEqual([
-      { row: 0, column: 0, side: ["top", "left"] },
-      { row: 0, column: 1, side: ["top", "right"] },
-      { row: 1, column: 0, side: ["bottom", "left"] },
-      { row: 1, column: 1, side: ["bottom", "right"] },
+      { row: 0, column: 4, side: ["top", "left"] },
+      { row: 0, column: 5, side: ["top", "right"] },
+      { row: 1, column: 4, side: ["bottom", "left"] },
+      { row: 1, column: 5, side: ["bottom", "right"] },
     ]);
   });
 

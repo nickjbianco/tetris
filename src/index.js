@@ -1,18 +1,13 @@
 import OTetromino from "./OTetromino";
 import Game from "./Game";
 
-const stage = new createjs.Stage("tetris");
-const newGame = new Game(stage);
-newGame.startGame();
-
-const clearOldTetrominoPosition = () => {
-  newGame.currentPiece.coordinates.forEach((coordinate) => {
-    const { row, column } = coordinate;
-    newGame.gameBoard[row][column] = "black";
-  });
-};
+let newGame;
+let stage;
 
 const init = () => {
+  stage = new createjs.Stage("tetris");
+  newGame = new Game(stage);
+  newGame.startGame();
   const background = new createjs.Shape();
   background.graphics.beginFill("#000000").drawRect(0, 0, 300, 600);
   stage.addChild(background);
@@ -21,26 +16,58 @@ const init = () => {
   console.log(newGame);
 };
 
+const currentPieceDefaultMove = () => {
+  setInterval(() => {
+    if (newGame.currentPiece.validMoveDown(newGame.gameBoard)) {
+      newGame.clearOldTetrominoPosition();
+      newGame.currentPiece.moveDown();
+      newGame.updateGrid();
+      newGame.render();
+    }
+  }, 500);
+};
+
+currentPieceDefaultMove();
+
 document.addEventListener("keydown", (e) => {
   e.preventDefault();
 
+  if (newGame.gameOver) {
+    const header = document.createElement("h1");
+    const gameOverMessage = document.createTextNode("GAME OVER");
+    header.appendChild(gameOverMessage);
+    document.body.appendChild(header);
+
+    const button = document.createElement("button");
+    button.innerHTML = "RESTART GAME";
+    button.addEventListener("click", () => {
+      init();
+      header.removeChild(gameOverMessage);
+      document.body.removeChild(button);
+    });
+    document.body.appendChild(button);
+
+    return;
+  }
+
   if (e.keyCode === 39 && newGame.currentPiece.validMoveRight()) {
-    clearOldTetrominoPosition();
+    newGame.clearOldTetrominoPosition();
     newGame.currentPiece.moveRight();
   } else if (e.keyCode === 37 && newGame.currentPiece.validMoveLeft()) {
-    clearOldTetrominoPosition();
+    newGame.clearOldTetrominoPosition();
     newGame.currentPiece.moveLeft();
   } else if (
     e.keyCode === 40 &&
     newGame.currentPiece.validMoveDown(newGame.gameBoard)
   ) {
-    clearOldTetrominoPosition();
+    newGame.clearOldTetrominoPosition();
     newGame.currentPiece.moveDown();
   }
 
   newGame.updateGrid();
   newGame.render();
-  if (newGame.isCurrentPieceStuck(newGame.gameBoard)) {
+
+  if (newGame.isCurrentPieceStuck()) {
     const completedRows = newGame.calculateCompletedRows();
     if (completedRows.length > 0) {
       newGame.droppedPieces.forEach((droppedPiece) => {
@@ -48,11 +75,16 @@ document.addEventListener("keydown", (e) => {
       });
       newGame.clearGameBoardRows(completedRows);
     }
+
     newGame.createNewPiece();
     newGame.updateGrid();
-    newGame.render();
+    setTimeout(() => {
+      newGame.render();
+    }, 300);
     console.log(newGame);
   }
+
+  newGame.checkGameOver();
 });
 
 window.onload = init;

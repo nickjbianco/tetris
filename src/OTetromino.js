@@ -1,10 +1,10 @@
 export default class OTetromino {
   constructor() {
     this.coordinates = [
-      { row: 0, column: 0, side: ["top", "left"] },
-      { row: 0, column: 1, side: ["top", "right"] },
-      { row: 1, column: 0, side: ["bottom", "left"] },
-      { row: 1, column: 1, side: ["bottom", "right"] },
+      { row: 0, column: 4, side: ["top", "left"] },
+      { row: 0, column: 5, side: ["top", "right"] },
+      { row: 1, column: 4, side: ["bottom", "left"] },
+      { row: 1, column: 5, side: ["bottom", "right"] },
     ];
     this.color = "yellow";
   }
