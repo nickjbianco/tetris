@@ -16,6 +16,20 @@ export default class Game {
     this.stage = stage;
     this.gameOver = false;
     this.currentScore = 0;
+    this.currentPieceDefaultMove = (document, init) => {
+      setInterval(() => {
+        if (!this.isCurrentPieceStuck()) {
+          this.clearOldTetrominoPosition();
+          this.currentPiece.moveDown();
+          this.updateGrid();
+          this.render();
+        } else {
+          this.handleCurrentPieceStuck();
+          this.checkGameOver();
+          this.restartGame(document, init); // only runs when game is over
+        }
+      }, 500);
+    };
   }
 
   render() {
@@ -78,6 +92,18 @@ export default class Game {
     gameBoardRowIndices.forEach((rowIdx) => {
       this.gameBoard[rowIdx] = new Array(10).fill("black");
     });
+
+    if (this.droppedPieces.length > 0) {
+      this.droppedPieces.forEach((droppedPiece) => {
+        const bottomSidePieces = droppedPiece.filter(
+          (piece) => piece.side === "bottom"
+        );
+
+        bottomSidePieces.forEach((bottomSidePiece) => {
+          if (bottomSidePiece.validMoveDown()) bottomSidePiece.moveDown();
+        });
+      });
+    }
   }
 
   clearOldTetrominoPosition() {
@@ -99,7 +125,26 @@ export default class Game {
     });
   }
 
-  currentPieceDefaultMove() {
+  restartGame(document, init) {
+    if (this.gameOver) {
+      const header = document.createElement("h1");
+      const gameOverMessage = document.createTextNode("GAME OVER");
+      header.appendChild(gameOverMessage);
+      document.body.appendChild(header);
+
+      const button = document.createElement("button");
+      button.innerHTML = "RESTART GAME";
+      button.addEventListener("click", () => {
+        init();
+        header.removeChild(gameOverMessage);
+        document.body.removeChild(button);
+      });
+      document.body.appendChild(button);
+      return;
+    }
+  }
+
+  currentPieceDefaultMove(document, init) {
     setInterval(() => {
       if (!this.isCurrentPieceStuck()) {
         this.clearOldTetrominoPosition();
@@ -107,16 +152,21 @@ export default class Game {
         this.updateGrid();
         this.render();
       } else {
-        this.createNewPiece();
+        this.handleCurrentPieceStuck();
+        this.checkGameOver();
+        this.restartGame(document, init); // only runs when game is over
       }
     }, 500);
   }
 
   executeMove(e) {
-    if (e.keyCode === 39 && this.currentPiece.validMoveRight()) {
+    if (e.keyCode === 39 && this.currentPiece.validMoveRight(this.gameBoard)) {
       this.clearOldTetrominoPosition();
       this.currentPiece.moveRight();
-    } else if (e.keyCode === 37 && this.currentPiece.validMoveLeft()) {
+    } else if (
+      e.keyCode === 37 &&
+      this.currentPiece.validMoveLeft(this.gameBoard)
+    ) {
       this.clearOldTetrominoPosition();
       this.currentPiece.moveLeft();
     } else if (
@@ -138,6 +188,7 @@ export default class Game {
         this.droppedPieces.forEach((droppedPiece) => {
           droppedPiece.clearCoordinates(completedRows);
         });
+        // move pieces down
         this.calculateScore();
         this.clearGameBoardRows(completedRows);
       }
@@ -149,5 +200,13 @@ export default class Game {
       }, 300);
       console.log(this);
     }
+  }
+
+  adjustPiecesAfterRowClear() {
+    this.droppedPieces.forEach((droppedPiece) => {
+      if (droppedPiece.validMoveDown(this.gameBoard)) {
+        droppedPiece.moveDown();
+      }
+    });
   }
 }

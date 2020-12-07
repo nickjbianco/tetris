@@ -31,25 +31,29 @@ export default class OTetromino {
 
   rotateLeft() {}
 
-  validMoveRight() {
+  validMoveRight(gameBoard) {
     const rightSideCoordinates = this.coordinates.filter((coordinate) =>
       coordinate.side.includes("right")
     );
     return rightSideCoordinates.every((rightSideCoordinate) => {
-      const { column } = rightSideCoordinate;
-      const nextGameBoardSpace = column + 1;
-      return nextGameBoardSpace <= 9;
+      const { row, column } = rightSideCoordinate;
+      const nextColumRight = column + 1;
+      if (nextColumRight <= 9) {
+        return gameBoard[row][nextColumRight] === "black";
+      }
     });
   }
 
-  validMoveLeft() {
+  validMoveLeft(gameBoard) {
     const leftSideCoordinates = this.coordinates.filter((coordinate) =>
       coordinate.side.includes("left")
     );
     return leftSideCoordinates.every((leftSideCoordinate) => {
-      const { column } = leftSideCoordinate;
-      const nextGameBoardSpace = column - 1;
-      return nextGameBoardSpace >= 0;
+      const { row, column } = leftSideCoordinate;
+      const nextColumnLeft = column - 1;
+      if (nextColumnLeft >= 0) {
+        return gameBoard[row][nextColumnLeft] === "black";
+      }
     });
   }
 

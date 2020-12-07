@@ -11,8 +11,9 @@ const init = () => {
   stage.addChild(background);
   newGame.updateGrid();
   newGame.render();
-  newGame.currentPieceDefaultMove();
+  newGame.currentPieceDefaultMove(document, init);
   newGame.calculateScore();
+  newGame.restartGame(document, init);
   const scoreHeader = document.createElement("h1");
   const scoreMessage = document.createTextNode(
     `Score: ${newGame.currentScore}`
@@ -24,27 +25,13 @@ const init = () => {
 
 document.addEventListener("keydown", (e) => {
   e.preventDefault();
-
-  if (newGame.gameOver) {
-    const header = document.createElement("h1");
-    const gameOverMessage = document.createTextNode("GAME OVER");
-    header.appendChild(gameOverMessage);
-    document.body.appendChild(header);
-
-    const button = document.createElement("button");
-    button.innerHTML = "RESTART GAME";
-    button.addEventListener("click", () => {
-      init();
-      header.removeChild(gameOverMessage);
-      document.body.removeChild(button);
-    });
-    document.body.appendChild(button);
-    return;
+  if (!newGame.gameOver) {
+    newGame.executeMove(e);
+    newGame.handleCurrentPieceStuck();
+    newGame.checkGameOver();
+  } else {
+    newGame.restartGame(document, init);
   }
-
-  newGame.executeMove(e);
-  newGame.handleCurrentPieceStuck();
-  newGame.checkGameOver();
 });
 
 window.onload = init;
