@@ -10,8 +10,12 @@ export default class OTetromino {
   }
 
   moveDown() {
-    this.coordinates.forEach((coordinate) => {
-      coordinate.row++;
+    this.coordinates = this.coordinates.map((coordinate) => {
+      const { row } = coordinate;
+      return {
+        ...coordinate,
+        row: row + 1,
+      };
     });
   }
 
@@ -58,6 +62,8 @@ export default class OTetromino {
   }
 
   validMoveDown(gameBoard) {
+    if (this.coordinates.length === 0) return false;
+
     const bottomSideCoordinates = this.coordinates.filter((coordinate) =>
       coordinate.side.includes("bottom")
     );
@@ -74,6 +80,13 @@ export default class OTetromino {
     this.coordinates = this.coordinates.filter((coordinate) => {
       const { row } = coordinate;
       return !rowIndices.includes(row);
+    });
+  }
+
+  determineCoordinatesToClear(rowIndices) {
+    return this.coordinates.filter((coordinate) => {
+      const { row } = coordinate;
+      return rowIndices.includes(row);
     });
   }
 }

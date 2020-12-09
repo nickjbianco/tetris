@@ -10,26 +10,40 @@ export default class Game {
       }
       gameBoard.push(boardRow);
     }
+    this.document = document;
+    this.gamePaused = false;
     this.gameBoard = gameBoard;
     this.currentPiece = null;
     this.droppedPieces = [];
     this.stage = stage;
     this.gameOver = false;
     this.currentScore = 0;
-    this.currentPieceDefaultMove = (document, init) => {
-      setInterval(() => {
-        if (!this.isCurrentPieceStuck()) {
-          this.clearOldTetrominoPosition();
-          this.currentPiece.moveDown();
-          this.updateGrid();
-          this.render();
-        } else {
-          this.handleCurrentPieceStuck();
-          this.checkGameOver();
-          this.restartGame(document, init); // only runs when game is over
-        }
-      }, 500);
-    };
+    this.interval = setInterval(() => this.currentPieceDefaultMove(), 500);
+  }
+
+  currentPieceDefaultMove() {
+    if (this.isCurrentPieceStuck()) this.checkGameOver();
+    if (this.isCurrentPieceStuck() && this.gameOver)
+      this.restartGame(document, this.init);
+
+    if (!this.isCurrentPieceStuck() && !this.gameOver) {
+      this.clearOldTetrominoPosition();
+      this.currentPiece.moveDown();
+      this.updateGrid();
+      this.render();
+    } else {
+      this.handleCurrentPieceStuck();
+    }
+  }
+
+  pauseGame() {
+    if (!this.gamePaused) {
+      clearInterval(this.interval);
+      this.gamePaused = true;
+    } else {
+      this.interval = setInterval(() => this.currentPieceDefaultMove(), 500);
+      this.gamePaused = false;
+    }
   }
 
   render() {
@@ -89,21 +103,32 @@ export default class Game {
   }
 
   clearGameBoardRows(gameBoardRowIndices) {
-    gameBoardRowIndices.forEach((rowIdx) => {
-      this.gameBoard[rowIdx] = new Array(10).fill("black");
+    this.droppedPieces.forEach((droppedPiece) => {
+      const clearedCoordinates = droppedPiece.determineCoordinatesToClear(
+        gameBoardRowIndices
+      );
+
+      droppedPiece.clearCoordinates(gameBoardRowIndices);
+
+      clearedCoordinates.forEach((coordinate) => {
+        const { row, column } = coordinate;
+        this.gameBoard[row][column] = "black";
+      });
+
+      while (droppedPiece.validMoveDown(this.gameBoard)) {
+        droppedPiece.coordinates.forEach((coordinate) => {
+          const { row, column } = coordinate;
+          this.gameBoard[row][column] = "black";
+        });
+        droppedPiece.moveDown();
+        droppedPiece.coordinates.forEach((coordinate) => {
+          const { row, column } = coordinate;
+          this.gameBoard[row][column] = droppedPiece.color;
+        });
+      }
     });
 
-    if (this.droppedPieces.length > 0) {
-      this.droppedPieces.forEach((droppedPiece) => {
-        const bottomSidePieces = droppedPiece.filter(
-          (piece) => piece.side === "bottom"
-        );
-
-        bottomSidePieces.forEach((bottomSidePiece) => {
-          if (bottomSidePiece.validMoveDown()) bottomSidePiece.moveDown();
-        });
-      });
-    }
+    this.render();
   }
 
   clearOldTetrominoPosition() {
@@ -117,16 +142,21 @@ export default class Game {
     const topSideCoordinates = this.currentPiece.coordinates.filter(
       (coordinate) => coordinate.side.includes("top")
     );
-    topSideCoordinates.forEach((topSideCoordinate) => {
+
+    for (let i = 0; i < topSideCoordinates.length; i++) {
+      const topSideCoordinate = topSideCoordinates[i];
       const { row } = topSideCoordinate;
-      if (this.isCurrentPieceStuck() && row === 0) {
+      if (row === 0) {
         this.gameOver = true;
+        this.pauseGame();
+        break;
       }
-    });
+    }
   }
 
   restartGame(document, init) {
     if (this.gameOver) {
+      this.pauseGame();
       const header = document.createElement("h1");
       const gameOverMessage = document.createTextNode("GAME OVER");
       header.appendChild(gameOverMessage);
@@ -142,21 +172,6 @@ export default class Game {
       document.body.appendChild(button);
       return;
     }
-  }
-
-  currentPieceDefaultMove(document, init) {
-    setInterval(() => {
-      if (!this.isCurrentPieceStuck()) {
-        this.clearOldTetrominoPosition();
-        this.currentPiece.moveDown();
-        this.updateGrid();
-        this.render();
-      } else {
-        this.handleCurrentPieceStuck();
-        this.checkGameOver();
-        this.restartGame(document, init); // only runs when game is over
-      }
-    }, 500);
   }
 
   executeMove(e) {
@@ -182,31 +197,19 @@ export default class Game {
   }
 
   handleCurrentPieceStuck() {
-    if (this.isCurrentPieceStuck()) {
-      const completedRows = this.calculateCompletedRows();
-      if (completedRows.length > 0) {
-        this.droppedPieces.forEach((droppedPiece) => {
-          droppedPiece.clearCoordinates(completedRows);
-        });
-        // move pieces down
-        this.calculateScore();
-        this.clearGameBoardRows(completedRows);
-      }
+    if (!this.isCurrentPieceStuck()) return;
 
-      this.createNewPiece();
-      this.updateGrid();
-      setTimeout(() => {
-        this.render();
-      }, 300);
-      console.log(this);
+    const completedRows = this.calculateCompletedRows();
+    if (completedRows.length > 0) {
+      this.calculateScore();
+      this.clearGameBoardRows(completedRows);
     }
-  }
-
-  adjustPiecesAfterRowClear() {
-    this.droppedPieces.forEach((droppedPiece) => {
-      if (droppedPiece.validMoveDown(this.gameBoard)) {
-        droppedPiece.moveDown();
-      }
-    });
+    this.checkGameOver();
+    this.createNewPiece();
+    this.updateGrid();
+    setTimeout(() => {
+      this.render();
+    }, 300);
+    console.log(this);
   }
 }
