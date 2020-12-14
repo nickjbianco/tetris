@@ -1,5 +1,5 @@
-import Game from "./Game";
-import OTetromino from "./OTetromino";
+import Game from "../src/Game";
+import OTetromino from "../src/tetrominos/OTetromino";
 
 describe("Game", () => {
   //   it("Should have a total of 20 board rows", () => {

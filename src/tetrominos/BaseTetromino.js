@@ -1,14 +1,5 @@
-export default class OTetromino {
-  constructor() {
-    this.coordinates = [
-      { row: 0, column: 4, side: ["top", "left"] },
-      { row: 0, column: 5, side: ["top", "right"] },
-      { row: 1, column: 4, side: ["bottom", "left"] },
-      { row: 1, column: 5, side: ["bottom", "right"] },
-    ];
-    this.color = "yellow";
-  }
-
+export default class BaseTetromino {
+  constructor() {}
   moveDown() {
     this.coordinates = this.coordinates.map((coordinate) => {
       const { row } = coordinate;
@@ -20,20 +11,24 @@ export default class OTetromino {
   }
 
   moveRight() {
-    this.coordinates.forEach((coordinate) => {
-      coordinate.column++;
+    this.coordinates = this.coordinates.map((coordinate) => {
+      const { column } = coordinate;
+      return {
+        ...coordinate,
+        column: column + 1,
+      };
     });
   }
 
   moveLeft() {
-    this.coordinates.forEach((coordinate) => {
-      coordinate.column--;
+    this.coordinates = this.coordinates.map((coordinate) => {
+      const { column } = coordinate;
+      return {
+        ...coordinate,
+        column: column - 1,
+      };
     });
   }
-
-  rotateRight() {}
-
-  rotateLeft() {}
 
   validMoveRight(gameBoard) {
     const rightSideCoordinates = this.coordinates.filter((coordinate) =>
@@ -63,7 +58,6 @@ export default class OTetromino {
 
   validMoveDown(gameBoard) {
     if (this.coordinates.length === 0) return false;
-
     const bottomSideCoordinates = this.coordinates.filter((coordinate) =>
       coordinate.side.includes("bottom")
     );

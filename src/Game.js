@@ -1,4 +1,6 @@
-import OTetromino from "./OTetromino";
+import OTetromino from "./tetrominos/OTetromino";
+import ITetromino from "./tetrominos/ITetromino";
+import LTetromino from "./tetrominos/LTetromino";
 
 export default class Game {
   constructor(stage) {
@@ -19,12 +21,12 @@ export default class Game {
     this.gameOver = false;
     this.currentScore = 0;
     this.interval = setInterval(() => this.currentPieceDefaultMove(), 500);
+    this.allPieces = [new OTetromino(), new ITetromino(), new LTetromino()];
   }
 
   currentPieceDefaultMove() {
     if (this.isCurrentPieceStuck()) this.checkGameOver();
-    if (this.isCurrentPieceStuck() && this.gameOver)
-      this.restartGame(document, this.init);
+    if (this.isCurrentPieceStuck() && this.gameOver) this.restartGame(document);
 
     if (!this.isCurrentPieceStuck() && !this.gameOver) {
       this.clearOldTetrominoPosition();
@@ -76,7 +78,10 @@ export default class Game {
   }
 
   createNewPiece() {
-    const newShape = new OTetromino();
+    const newShape = new ITetromino();
+    // const randomNum = Math.floor(Math.random() * this.allPieces.length);
+    // const randdomShape = this.allPieces[randomNum];
+    // const newShape = randdomShape;
     this.currentPiece = newShape;
     this.droppedPieces.push(newShape);
   }
@@ -85,9 +90,7 @@ export default class Game {
     const fullRows = [];
     this.gameBoard.forEach((row, idx) => {
       const fullRow = row.every((cell) => cell !== "black");
-      if (fullRow) {
-        fullRows.push(idx);
-      }
+      if (fullRow) fullRows.push(idx);
     });
     return fullRows;
   }
@@ -154,7 +157,7 @@ export default class Game {
     }
   }
 
-  restartGame(document, init) {
+  restartGame(document) {
     if (this.gameOver) {
       this.pauseGame();
       const header = document.createElement("h1");
@@ -190,6 +193,12 @@ export default class Game {
     ) {
       this.clearOldTetrominoPosition();
       this.currentPiece.moveDown();
+    } else if (e.keyCode === 38) {
+      this.clearOldTetrominoPosition();
+      this.currentPiece.rotateRight();
+    } else if (e.keyCode === 88) {
+      this.clearOldTetrominoPosition();
+      this.currentPiece.rotateLeft();
     }
 
     this.updateGrid();
@@ -211,5 +220,10 @@ export default class Game {
       this.render();
     }, 300);
     console.log(this);
+  }
+
+  handleKeyPress(e) {
+    e.preventDefault();
+    if (!this.gamePaused) this.executeMove(e);
   }
 }

@@ -2,7 +2,7 @@ import Game from "./Game";
 
 let newGame;
 let stage;
-const init = () => {
+window.init = () => {
   stage = new createjs.Stage("tetris");
   newGame = new Game(stage, document);
   newGame.startGame();
@@ -11,6 +11,8 @@ const init = () => {
   stage.addChild(background);
   newGame.updateGrid();
   newGame.render();
+
+  // show the score
   newGame.calculateScore();
   const scoreHeader = document.createElement("h1");
   const scoreMessage = document.createTextNode(
@@ -19,20 +21,17 @@ const init = () => {
   scoreHeader.appendChild(scoreMessage);
   document.body.appendChild(scoreHeader);
 
+  // pause the game
   const pauseButton = document.createElement("button");
   pauseButton.innerHTML = "PAUSE GAME";
-  pauseButton.addEventListener("click", () => {
-    newGame.pauseGame();
-  });
+  pauseButton.addEventListener("click", () => newGame.pauseGame());
   document.body.appendChild(pauseButton);
+
+  // handle a key press
+  if (!newGame.gameOver || !newGame.gamePaused)
+    document.addEventListener("keydown", (e) => newGame.handleKeyPress(e));
 
   console.log(newGame);
 };
-
-document.addEventListener("keydown", (e) => {
-  e.preventDefault();
-  if (newGame.gameOver) newGame.restartGame(document, init);
-  newGame.executeMove(e);
-});
 
 window.onload = init;
