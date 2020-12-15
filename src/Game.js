@@ -78,7 +78,8 @@ export default class Game {
   }
 
   createNewPiece() {
-    const newShape = new ITetromino();
+    // const newShape = new ITetromino();
+    const newShape = new LTetromino();
     // const randomNum = Math.floor(Math.random() * this.allPieces.length);
     // const randdomShape = this.allPieces[randomNum];
     // const newShape = randdomShape;
@@ -195,10 +196,10 @@ export default class Game {
       this.currentPiece.moveDown();
     } else if (e.keyCode === 38) {
       this.clearOldTetrominoPosition();
-      this.currentPiece.rotateRight();
+      this.currentPiece.rotateRight(this.gameBoard);
     } else if (e.keyCode === 88) {
       this.clearOldTetrominoPosition();
-      this.currentPiece.rotateLeft();
+      this.currentPiece.rotateLeft(this.gameBoard);
     }
 
     this.updateGrid();

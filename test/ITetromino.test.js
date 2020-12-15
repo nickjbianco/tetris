@@ -92,7 +92,7 @@ describe("I Tetromino", () => {
   });
 });
 
-fit("Rotates left", () => {
+it("Rotates left", () => {
   const IShape = new ITetromino();
   IShape.coordinates = [
     { row: 4, column: 3, side: ["top", "bottom", "left"] },

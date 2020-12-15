@@ -38,8 +38,8 @@ export default class ITetromino extends BaseTetromino {
   }
 
   // Left Rotation
-  rotateLeft() {
-    if (!this.validRotateLeft()) return;
+  rotateLeft(gameBoard) {
+    if (!this.validRotateLeft(gameBoard)) return;
     this.coordinates = this.nextRotationLeftMoveMethod[
       this.anchorPointDirection
     ]();
@@ -48,14 +48,22 @@ export default class ITetromino extends BaseTetromino {
     ];
   }
 
-  validRotateLeft() {
+  validRotateLeft(gameBoard) {
     const coordinates = this.nextRotationLeftMoveMethod[
       this.anchorPointDirection
     ]();
-    return coordinates.every((coordinate) => {
+
+    const onGameBoard = coordinates.every((coordinate) => {
       const { row, column } = coordinate;
       return row >= 0 && row <= 19 && column >= 0 && column <= 9;
     });
+
+    const openSpaceOnGameBoard = coordinates.every((coordinate) => {
+      const { row, column } = coordinate;
+      return gameBoard[row][column] === "black";
+    });
+
+    return onGameBoard && openSpaceOnGameBoard;
   }
 
   calcRotationLeftToBottom() {
@@ -99,8 +107,8 @@ export default class ITetromino extends BaseTetromino {
   }
 
   // Right Rotation
-  rotateRight() {
-    if (!this.validRotateRight()) return;
+  rotateRight(gameBoard) {
+    if (!this.validRotateRight(gameBoard)) return;
     this.coordinates = this.nextRotationRightMoveMethod[
       this.anchorPointDirection
     ]();
@@ -109,14 +117,22 @@ export default class ITetromino extends BaseTetromino {
     ];
   }
 
-  validRotateRight() {
+  validRotateRight(gameBoard) {
     const coordinates = this.nextRotationRightMoveMethod[
       this.anchorPointDirection
     ]();
-    return coordinates.every((coordinate) => {
+
+    const onGameBoard = coordinates.every((coordinate) => {
       const { row, column } = coordinate;
       return row >= 0 && row <= 19 && column >= 0 && column <= 9;
     });
+
+    const openSpaceOnGameBoard = coordinates.every((coordinate) => {
+      const { row, column } = coordinate;
+      return gameBoard[row][column] === "black";
+    });
+
+    return onGameBoard && openSpaceOnGameBoard;
   }
 
   calcRotationLeftToTop() {
