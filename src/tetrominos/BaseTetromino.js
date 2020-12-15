@@ -56,20 +56,6 @@ export default class BaseTetromino {
     });
   }
 
-  validMoveDown(gameBoard) {
-    if (this.coordinates.length === 0) return false;
-    const bottomSideCoordinates = this.coordinates.filter((coordinate) =>
-      coordinate.side.includes("bottom")
-    );
-    return bottomSideCoordinates.every((bottomSideCoordinate) => {
-      const { row, column } = bottomSideCoordinate;
-      const nextRowDown = row + 1;
-      if (nextRowDown <= 19) {
-        return gameBoard[nextRowDown][column] === "black";
-      }
-    });
-  }
-
   clearCoordinates(rowIndices) {
     this.coordinates = this.coordinates.filter((coordinate) => {
       const { row } = coordinate;

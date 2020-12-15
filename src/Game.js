@@ -1,6 +1,8 @@
 import OTetromino from "./tetrominos/OTetromino";
 import ITetromino from "./tetrominos/ITetromino";
 import LTetromino from "./tetrominos/LTetromino";
+import JTetromino from "./tetrominos/JTetromino";
+import TTetromino from "./tetrominos/TTetromino";
 
 export default class Game {
   constructor(stage) {
@@ -21,7 +23,13 @@ export default class Game {
     this.gameOver = false;
     this.currentScore = 0;
     this.interval = setInterval(() => this.currentPieceDefaultMove(), 500);
-    this.allPieces = [new OTetromino(), new ITetromino(), new LTetromino()];
+    this.allPieces = [
+      new OTetromino(),
+      new ITetromino(),
+      new LTetromino(),
+      new JTetromino(),
+      new TTetromino(),
+    ];
   }
 
   currentPieceDefaultMove() {
@@ -78,8 +86,11 @@ export default class Game {
   }
 
   createNewPiece() {
+    // const newShape = new OTetromino();
     // const newShape = new ITetromino();
-    const newShape = new LTetromino();
+    // const newShape = new LTetromino();
+    // const newShape = new JTetromino();
+    const newShape = new TTetromino();
     // const randomNum = Math.floor(Math.random() * this.allPieces.length);
     // const randdomShape = this.allPieces[randomNum];
     // const newShape = randdomShape;

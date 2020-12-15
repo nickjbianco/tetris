@@ -37,9 +37,25 @@ export default class ITetromino extends BaseTetromino {
     };
   }
 
+  validMoveDown(gameBoard) {
+    if (this.coordinates.length === 0) return false;
+
+    const bottomSideCoordinates = this.coordinates.filter((coordinate) =>
+      coordinate.side.includes("bottom")
+    );
+
+    return bottomSideCoordinates.every((bottomSideCoordinate) => {
+      const { row, column } = bottomSideCoordinate;
+      const nextRowDown = row + 1;
+      if (nextRowDown <= 19) {
+        return gameBoard[nextRowDown][column] === "black";
+      }
+    });
+  }
+
   // Left Rotation
   rotateLeft(gameBoard) {
-    if (!this.validRotateLeft(gameBoard)) return;
+    if (!this.validRotateLeft(gameBoard)) return false;
     this.coordinates = this.nextRotationLeftMoveMethod[
       this.anchorPointDirection
     ]();
@@ -49,21 +65,23 @@ export default class ITetromino extends BaseTetromino {
   }
 
   validRotateLeft(gameBoard) {
-    const coordinates = this.nextRotationLeftMoveMethod[
+    const endCoordinates = this.nextRotationLeftMoveMethod[
       this.anchorPointDirection
     ]();
 
-    const onGameBoard = coordinates.every((coordinate) => {
+    const onGameBoard = endCoordinates.every((coordinate) => {
       const { row, column } = coordinate;
       return row >= 0 && row <= 19 && column >= 0 && column <= 9;
     });
 
-    const openSpaceOnGameBoard = coordinates.every((coordinate) => {
+    if (!onGameBoard) return false;
+
+    const openGameBoardSpace = endCoordinates.every((coordinate) => {
       const { row, column } = coordinate;
       return gameBoard[row][column] === "black";
     });
 
-    return onGameBoard && openSpaceOnGameBoard;
+    return openGameBoardSpace;
   }
 
   calcRotationLeftToBottom() {
@@ -118,21 +136,23 @@ export default class ITetromino extends BaseTetromino {
   }
 
   validRotateRight(gameBoard) {
-    const coordinates = this.nextRotationRightMoveMethod[
+    const endCoordinates = this.nextRotationRightMoveMethod[
       this.anchorPointDirection
     ]();
 
-    const onGameBoard = coordinates.every((coordinate) => {
+    const onGameBoard = endCoordinates.every((coordinate) => {
       const { row, column } = coordinate;
       return row >= 0 && row <= 19 && column >= 0 && column <= 9;
     });
 
-    const openSpaceOnGameBoard = coordinates.every((coordinate) => {
+    if (!onGameBoard) return false;
+
+    const openSpaceOnGameBoard = endCoordinates.every((coordinate) => {
       const { row, column } = coordinate;
       return gameBoard[row][column] === "black";
     });
 
-    return onGameBoard && openSpaceOnGameBoard;
+    return openSpaceOnGameBoard;
   }
 
   calcRotationLeftToTop() {

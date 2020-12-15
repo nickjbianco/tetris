@@ -44,96 +44,96 @@ describe("I Tetromino", () => {
     ]);
   });
 
-  it("Rotates right", () => {
-    const IShape = new ITetromino();
+  //   it("Rotates right", () => {
+  //     const IShape = new ITetromino();
 
-    IShape.coordinates = [
-      { row: 4, column: 3, side: ["top", "bottom", "left"] },
-      { row: 4, column: 4, side: ["top", "bottom"] },
-      { row: 4, column: 5, side: ["top", "bottom"] },
-      { row: 4, column: 6, side: ["top", "bottom", "right"] },
-    ];
+  //     IShape.coordinates = [
+  //       { row: 4, column: 3, side: ["top", "bottom", "left"] },
+  //       { row: 4, column: 4, side: ["top", "bottom"] },
+  //       { row: 4, column: 5, side: ["top", "bottom"] },
+  //       { row: 4, column: 6, side: ["top", "bottom", "right"] },
+  //     ];
 
-    // First Rotation
-    IShape.rotateRight();
-    expect(IShape.coordinates).toEqual([
-      { row: 4, column: 3, side: ["right", "left", "top"] },
-      { row: 5, column: 3, side: ["right", "left"] },
-      { row: 6, column: 3, side: ["right", "left"] },
-      { row: 7, column: 3, side: ["right", "left", "bottom"] },
-    ]);
+  //     // First Rotation
+  //     IShape.rotateRight();
+  //     expect(IShape.coordinates).toEqual([
+  //       { row: 4, column: 3, side: ["right", "left", "top"] },
+  //       { row: 5, column: 3, side: ["right", "left"] },
+  //       { row: 6, column: 3, side: ["right", "left"] },
+  //       { row: 7, column: 3, side: ["right", "left", "bottom"] },
+  //     ]);
 
-    // Second Rotation
-    IShape.rotateRight();
-    expect(IShape.coordinates).toEqual([
-      { row: 4, column: 3, side: ["bottom", "top", "right"] },
-      { row: 4, column: 2, side: ["bottom", "top"] },
-      { row: 4, column: 1, side: ["bottom", "top"] },
-      { row: 4, column: 0, side: ["bottom", "top", "left"] },
-    ]);
+  //     // Second Rotation
+  //     IShape.rotateRight();
+  //     expect(IShape.coordinates).toEqual([
+  //       { row: 4, column: 3, side: ["bottom", "top", "right"] },
+  //       { row: 4, column: 2, side: ["bottom", "top"] },
+  //       { row: 4, column: 1, side: ["bottom", "top"] },
+  //       { row: 4, column: 0, side: ["bottom", "top", "left"] },
+  //     ]);
 
-    // Third Rotation
-    IShape.rotateRight();
-    expect(IShape.coordinates).toEqual([
-      { row: 4, column: 3, side: ["left", "right", "bottom"] },
-      { row: 3, column: 3, side: ["left", "right"] },
-      { row: 2, column: 3, side: ["left", "right"] },
-      { row: 1, column: 3, side: ["left", "right", "top"] },
-    ]);
+  //     // Third Rotation
+  //     IShape.rotateRight();
+  //     expect(IShape.coordinates).toEqual([
+  //       { row: 4, column: 3, side: ["left", "right", "bottom"] },
+  //       { row: 3, column: 3, side: ["left", "right"] },
+  //       { row: 2, column: 3, side: ["left", "right"] },
+  //       { row: 1, column: 3, side: ["left", "right", "top"] },
+  //     ]);
 
-    // Fourth Rotation
-    IShape.rotateRight();
-    expect(IShape.coordinates).toEqual([
-      { row: 4, column: 3, side: ["top", "bottom", "left"] },
-      { row: 4, column: 4, side: ["top", "bottom"] },
-      { row: 4, column: 5, side: ["top", "bottom"] },
-      { row: 4, column: 6, side: ["top", "bottom", "right"] },
-    ]);
-  });
-});
+  //     // Fourth Rotation
+  //     IShape.rotateRight();
+  //     expect(IShape.coordinates).toEqual([
+  //       { row: 4, column: 3, side: ["top", "bottom", "left"] },
+  //       { row: 4, column: 4, side: ["top", "bottom"] },
+  //       { row: 4, column: 5, side: ["top", "bottom"] },
+  //       { row: 4, column: 6, side: ["top", "bottom", "right"] },
+  //     ]);
+  //   });
+  // });
 
-it("Rotates left", () => {
-  const IShape = new ITetromino();
-  IShape.coordinates = [
-    { row: 4, column: 3, side: ["top", "bottom", "left"] },
-    { row: 4, column: 4, side: ["top", "bottom"] },
-    { row: 4, column: 5, side: ["top", "bottom"] },
-    { row: 4, column: 6, side: ["top", "bottom", "right"] },
-  ];
+  // it("Rotates left", () => {
+  //   const IShape = new ITetromino();
+  //   IShape.coordinates = [
+  //     { row: 4, column: 3, side: ["top", "bottom", "left"] },
+  //     { row: 4, column: 4, side: ["top", "bottom"] },
+  //     { row: 4, column: 5, side: ["top", "bottom"] },
+  //     { row: 4, column: 6, side: ["top", "bottom", "right"] },
+  //   ];
 
-  // First Rotation
-  IShape.rotateLeft();
-  expect(IShape.coordinates).toEqual([
-    { row: 4, column: 3, side: ["left", "right", "bottom"] },
-    { row: 3, column: 3, side: ["left", "right"] },
-    { row: 2, column: 3, side: ["left", "right"] },
-    { row: 1, column: 3, side: ["left", "right", "top"] },
-  ]);
+  //   // First Rotation
+  //   IShape.rotateLeft();
+  //   expect(IShape.coordinates).toEqual([
+  //     { row: 4, column: 3, side: ["left", "right", "bottom"] },
+  //     { row: 3, column: 3, side: ["left", "right"] },
+  //     { row: 2, column: 3, side: ["left", "right"] },
+  //     { row: 1, column: 3, side: ["left", "right", "top"] },
+  //   ]);
 
-  // Second Rotation
-  IShape.rotateLeft();
-  expect(IShape.coordinates).toEqual([
-    { row: 4, column: 3, side: ["bottom", "top", "right"] },
-    { row: 4, column: 2, side: ["bottom", "top"] },
-    { row: 4, column: 1, side: ["bottom", "top"] },
-    { row: 4, column: 0, side: ["bottom", "top", "left"] },
-  ]);
+  //   // Second Rotation
+  //   IShape.rotateLeft();
+  //   expect(IShape.coordinates).toEqual([
+  //     { row: 4, column: 3, side: ["bottom", "top", "right"] },
+  //     { row: 4, column: 2, side: ["bottom", "top"] },
+  //     { row: 4, column: 1, side: ["bottom", "top"] },
+  //     { row: 4, column: 0, side: ["bottom", "top", "left"] },
+  //   ]);
 
-  // Third Rotation
-  IShape.rotateLeft();
-  expect(IShape.coordinates).toEqual([
-    { row: 4, column: 3, side: ["right", "left", "top"] },
-    { row: 5, column: 3, side: ["right", "left"] },
-    { row: 6, column: 3, side: ["right", "left"] },
-    { row: 7, column: 3, side: ["right", "left", "bottom"] },
-  ]);
+  //   // Third Rotation
+  //   IShape.rotateLeft();
+  //   expect(IShape.coordinates).toEqual([
+  //     { row: 4, column: 3, side: ["right", "left", "top"] },
+  //     { row: 5, column: 3, side: ["right", "left"] },
+  //     { row: 6, column: 3, side: ["right", "left"] },
+  //     { row: 7, column: 3, side: ["right", "left", "bottom"] },
+  //   ]);
 
-  // Fourth Rotation
-  IShape.rotateLeft();
-  expect(IShape.coordinates).toEqual([
-    { row: 4, column: 3, side: ["top", "bottom", "left"] },
-    { row: 4, column: 4, side: ["top", "bottom"] },
-    { row: 4, column: 5, side: ["top", "bottom"] },
-    { row: 4, column: 6, side: ["top", "bottom", "right"] },
-  ]);
+  //   // Fourth Rotation
+  //   IShape.rotateLeft();
+  //   expect(IShape.coordinates).toEqual([
+  //     { row: 4, column: 3, side: ["top", "bottom", "left"] },
+  //     { row: 4, column: 4, side: ["top", "bottom"] },
+  //     { row: 4, column: 5, side: ["top", "bottom"] },
+  //     { row: 4, column: 6, side: ["top", "bottom", "right"] },
+  //   ]);
 });

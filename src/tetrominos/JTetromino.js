@@ -1,15 +1,15 @@
 import BaseTetromino from "./BaseTetromino";
 
-export default class LTetromino extends BaseTetromino {
+export default class JTetromino extends BaseTetromino {
   constructor() {
     super();
     this.coordinates = [
-      { row: 0, column: 4, side: ["left", "top"] },
-      { row: 1, column: 4, side: ["left", "bottom"] },
-      { row: 1, column: 5, side: ["bottom"] },
+      { row: 0, column: 6, side: ["right", "top"] },
       { row: 1, column: 6, side: ["right", "bottom"] },
+      { row: 1, column: 5, side: ["bottom"] },
+      { row: 1, column: 4, side: ["left", "bottom"] },
     ];
-    this.color = "blue";
+    this.color = "green";
     this.anchorPointDirection = "top";
     this.nextRotationLeftMove = {
       left: "bottom",
@@ -55,16 +55,16 @@ export default class LTetromino extends BaseTetromino {
 
     const anchorPiece = this.coordinates[0];
     const { row, column } = anchorPiece;
-    const nextAnchorPieceSpaceDown = anchorPiece.side.includes("right")
+    const nextAnchorPieceSpaceDown = anchorPiece.side.includes("left")
       ? gameBoard[row + 1][column] === "black"
       : true;
 
     return bottomSpaceOpen && nextAnchorPieceSpaceDown;
   }
 
-  //Rotate Right
+  // Rotate Right
   rotateRight(gameBoard) {
-    if (!this.validRotateRight(gameBoard)) return;
+    if (!this.validRotateRight(gameBoard)) return false;
     this.coordinates = this.nextRotationRightMoveMethod[
       this.anchorPointDirection
     ]();
@@ -104,7 +104,7 @@ export default class LTetromino extends BaseTetromino {
           (direction) => this.nextRotationRightMove[direction]
         ),
         column: column - adjCol,
-        row: row + adjRow,
+        row: row - adjRow,
       };
     });
   }
@@ -119,7 +119,7 @@ export default class LTetromino extends BaseTetromino {
         side: piece.side.map(
           (direction) => this.nextRotationRightMove[direction]
         ),
-        column: column - adjCol,
+        column: column + adjCol,
         row: row - adjRow,
       };
     });
@@ -136,7 +136,7 @@ export default class LTetromino extends BaseTetromino {
           (direction) => this.nextRotationRightMove[direction]
         ),
         column: column + adjCol,
-        row: row - adjRow,
+        row: row + adjRow,
       };
     });
   }
@@ -151,15 +151,15 @@ export default class LTetromino extends BaseTetromino {
         side: piece.side.map(
           (direction) => this.nextRotationRightMove[direction]
         ),
-        column: column + adjCol,
+        column: column - adjCol,
         row: row + adjRow,
       };
     });
   }
 
-  //Rotate Left
+  // Rotate Left
   rotateLeft(gameBoard) {
-    if (!this.validRotateLeft(gameBoard)) return;
+    if (!this.validRotateLeft(gameBoard)) return false;
     this.coordinates = this.nextRotationLeftMoveMethod[
       this.anchorPointDirection
     ]();
@@ -180,7 +180,7 @@ export default class LTetromino extends BaseTetromino {
 
     if (!onGameBoard) return false;
 
-    const openSpaceOnGameBoard = coordinates.slice(1).every((coordinate) => {
+    const openSpaceOnGameBoard = coordinates.every((coordinate) => {
       const { row, column } = coordinate;
       return gameBoard[row][column] === "black";
     });
@@ -199,7 +199,7 @@ export default class LTetromino extends BaseTetromino {
           (direction) => this.nextRotationLeftMove[direction]
         ),
         column: column + adjCol,
-        row: row - adjRow,
+        row: row + adjRow,
       };
     });
   }
@@ -214,7 +214,7 @@ export default class LTetromino extends BaseTetromino {
         side: piece.side.map(
           (direction) => this.nextRotationLeftMove[direction]
         ),
-        column: column - adjCol,
+        column: column + adjCol,
         row: row - adjRow,
       };
     });
@@ -231,7 +231,7 @@ export default class LTetromino extends BaseTetromino {
           (direction) => this.nextRotationLeftMove[direction]
         ),
         column: column - adjCol,
-        row: row + adjRow,
+        row: row - adjRow,
       };
     });
   }
@@ -246,7 +246,7 @@ export default class LTetromino extends BaseTetromino {
         side: piece.side.map(
           (direction) => this.nextRotationLeftMove[direction]
         ),
-        column: column + adjCol,
+        column: column - adjCol,
         row: row + adjRow,
       };
     });
