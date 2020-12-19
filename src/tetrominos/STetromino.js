@@ -10,12 +10,11 @@ export default class STetromino extends BaseTetromino {
       { row: 1, column: 4, side: ["bottom", "left"] },
     ];
     this.color = "pink";
-    this.anchorPointDirection = "top";
-    this.nextRotationRightMove = {
-      left: "top",
-      top: "right",
-      right: "bottom",
-      bottom: "left",
+    this.nextRotationLeftMoveMethod = {
+      top: this.calcRotationTopToLeft.bind(this),
+      left: this.calcRotationLeftToBottom.bind(this),
+      bottom: this.calcRotationBottomToRight.bind(this),
+      right: this.calcRotationRightToTop.bind(this),
     };
     this.nextRotationRightMoveMethod = {
       left: this.calcRotationLeftToTop.bind(this),
@@ -27,6 +26,103 @@ export default class STetromino extends BaseTetromino {
 
   validMoveDown() {
     return true;
+  }
+
+  // Rotate Left
+  rotateLeft(gameBoard) {
+    if (!this.validRotateLeft(gameBoard)) return false;
+
+    this.coordinates = this.nextRotationLeftMoveMethod[
+      this.anchorPointDirection
+    ]();
+
+    this.anchorPointDirection = this.nextRotationLeftMove[
+      this.anchorPointDirection
+    ];
+  }
+
+  validRotateLeft(gameBoard) {
+    const coordinates = this.nextRotationLeftMoveMethod[
+      this.anchorPointDirection
+    ]();
+
+    const onGameBoard = coordinates.every((coordinate) => {
+      const { row, column } = coordinate;
+      return row >= 0 && row <= 19 && column >= 0 && column <= 9;
+    });
+
+    if (!onGameBoard) return false;
+
+    const openSpaceOnGameBoard = coordinates.every((coordinate) => {
+      const { row, column } = coordinate;
+      return gameBoard[row][column] === "black";
+    });
+
+    return openSpaceOnGameBoard;
+  }
+
+  calcRotationTopToLeft() {
+    const anchorPiece = this.coordinates[0];
+    const { row, column } = anchorPiece;
+    return this.coordinates.map((piece, idx) => {
+      const adjRow = idx > 0 ? idx - 2 : idx;
+      const adjCol = idx > 1 ? 1 : 0;
+      return {
+        side: piece.side.map(
+          (direction) => this.nextRotationLeftMove[direction]
+        ),
+        column: column + adjCol,
+        row: row + adjRow,
+      };
+    });
+  }
+
+  calcRotationLeftToBottom() {
+    const anchorPiece = this.coordinates[0];
+    const { row, column } = anchorPiece;
+    return this.coordinates.map((piece, idx) => {
+      const adjRow = idx > 1 ? 1 : 0;
+      const adjCol = idx > 0 ? idx - 2 : idx;
+      return {
+        side: piece.side.map(
+          (direction) => this.nextRotationLeftMove[direction]
+        ),
+        column: column + adjCol,
+        row: row - adjRow,
+      };
+    });
+  }
+
+  calcRotationBottomToRight() {
+    const anchorPiece = this.coordinates[0];
+    const { row, column } = anchorPiece;
+    return this.coordinates.map((piece, idx) => {
+      const adjRow = idx > 0 ? idx - 2 : idx;
+      const adjCol = idx > 1 ? 1 : 0;
+      return {
+        side: piece.side.map(
+          (direction) => this.nextRotationLeftMove[direction]
+        ),
+        column: column - adjCol,
+        row: row - adjRow,
+      };
+    });
+  }
+
+  calcRotationRightToTop() {
+    const anchorPiece = this.coordinates[0];
+    const { row, column } = anchorPiece;
+    return this.coordinates.map((piece, idx) => {
+      const adjRow = idx > 1 ? 1 : 0;
+      const adjCol = idx > 0 ? idx - 2 : idx;
+      return {
+        side: piece.side.map(
+          (direction) => this.nextRotationLeftMove[direction]
+        ),
+        column: column - adjCol,
+        row: row + adjRow,
+      };
+    });
   }
 
   // Rotate Right

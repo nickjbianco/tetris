@@ -7,100 +7,100 @@ describe("S Tetromino", () => {
       { row: 0, column: 5, side: ["top"] },
       { row: 0, column: 6, side: ["top", "right"] },
       { row: 1, column: 5, side: ["bottom"] },
-      { row: 1, column: 6, side: ["bottom", "left"] },
+      { row: 1, column: 4, side: ["bottom", "left"] },
     ]);
   });
 
-  fit("Rotates right", () => {
-    const SShape = new STetromino();
+  //   it("Rotates right", () => {
+  //     const SShape = new STetromino();
 
-    SShape.coordinates = [
-      { row: 4, column: 5, side: ["top"] },
-      { row: 4, column: 6, side: ["top", "right"] },
-      { row: 5, column: 5, side: ["bottom"] },
-      { row: 5, column: 4, side: ["bottom", "left"] },
-    ];
+  //     SShape.coordinates = [
+  //       { row: 4, column: 5, side: ["top"] },
+  //       { row: 4, column: 6, side: ["top", "right"] },
+  //       { row: 5, column: 5, side: ["bottom"] },
+  //       { row: 5, column: 4, side: ["bottom", "left"] },
+  //     ];
 
-    // First Rotation
-    SShape.rotateRight();
-    expect(SShape.coordinates).toEqual([
-      { row: 4, column: 5, side: ["right"] },
-      { row: 5, column: 5, side: ["right", "bottom"] },
-      { row: 4, column: 4, side: ["left"] },
-      { row: 3, column: 4, side: ["left", "top"] },
-    ]);
+  //     // First Rotation
+  //     SShape.rotateRight();
+  //     expect(SShape.coordinates).toEqual([
+  //       { row: 4, column: 5, side: ["right"] },
+  //       { row: 5, column: 5, side: ["right", "bottom"] },
+  //       { row: 4, column: 4, side: ["left"] },
+  //       { row: 3, column: 4, side: ["left", "top"] },
+  //     ]);
 
-    // Second Rotation
-    SShape.rotateRight();
-    expect(SShape.coordinates).toEqual([
-      { row: 4, column: 5, side: ["bottom"] },
-      { row: 4, column: 4, side: ["bottom", "left"] },
-      { row: 3, column: 5, side: ["top"] },
-      { row: 3, column: 6, side: ["top", "right"] },
-    ]);
+  //     // Second Rotation
+  //     SShape.rotateRight();
+  //     expect(SShape.coordinates).toEqual([
+  //       { row: 4, column: 5, side: ["bottom"] },
+  //       { row: 4, column: 4, side: ["bottom", "left"] },
+  //       { row: 3, column: 5, side: ["top"] },
+  //       { row: 3, column: 6, side: ["top", "right"] },
+  //     ]);
 
-    // Third Rotation
-    SShape.rotateRight();
-    expect(SShape.coordinates).toEqual([
-      { row: 4, column: 5, side: ["left"] },
-      { row: 3, column: 5, side: ["left", "top"] },
-      { row: 4, column: 6, side: ["right"] },
-      { row: 5, column: 6, side: ["right", "bottom"] },
-    ]);
+  //     // Third Rotation
+  //     SShape.rotateRight();
+  //     expect(SShape.coordinates).toEqual([
+  //       { row: 4, column: 5, side: ["left"] },
+  //       { row: 3, column: 5, side: ["left", "top"] },
+  //       { row: 4, column: 6, side: ["right"] },
+  //       { row: 5, column: 6, side: ["right", "bottom"] },
+  //     ]);
 
-    // Fourth Rotation
-    SShape.rotateRight();
-    expect(SShape.coordinates).toEqual([
-      { row: 4, column: 5, side: ["top"] },
-      { row: 4, column: 6, side: ["top", "right"] },
-      { row: 5, column: 5, side: ["bottom"] },
-      { row: 5, column: 4, side: ["bottom", "left"] },
-    ]);
-  });
+  //     // Fourth Rotation
+  //     SShape.rotateRight();
+  //     expect(SShape.coordinates).toEqual([
+  //       { row: 4, column: 5, side: ["top"] },
+  //       { row: 4, column: 6, side: ["top", "right"] },
+  //       { row: 5, column: 5, side: ["bottom"] },
+  //       { row: 5, column: 4, side: ["bottom", "left"] },
+  //     ]);
+  //   });
   // });
 
-  // fit("Rotates left", () => {
+  // it("Rotates left", () => {
   //   const SShape = new STetromino();
   //   SShape.coordinates = [
   //     { row: 4, column: 5, side: ["top"] },
-  //     { row: 4, column: 4, side: ["top", "left"] },
+  //     { row: 4, column: 6, side: ["top", "right"] },
   //     { row: 5, column: 5, side: ["bottom"] },
-  //     { row: 5, column: 6, side: ["bottom", "right"] },
+  //     { row: 5, column: 4, side: ["bottom", "left"] },
   //   ];
 
   //   // First Rotation
   //   SShape.rotateLeft();
   //   expect(SShape.coordinates).toEqual([
   //     { row: 4, column: 5, side: ["left"] },
-  //     { row: 5, column: 5, side: ["left", "bottom"] },
+  //     { row: 3, column: 5, side: ["left", "top"] },
   //     { row: 4, column: 6, side: ["right"] },
-  //     { row: 3, column: 6, side: ["right", "top"] },
+  //     { row: 5, column: 6, side: ["right", "bottom"] },
   //   ]);
 
   //   // Second Rotation
   //   SShape.rotateLeft();
   //   expect(SShape.coordinates).toEqual([
   //     { row: 4, column: 5, side: ["bottom"] },
-  //     { row: 4, column: 6, side: ["bottom", "right"] },
+  //     { row: 4, column: 4, side: ["bottom", "left"] },
   //     { row: 3, column: 5, side: ["top"] },
-  //     { row: 3, column: 4, side: ["top", "left"] },
+  //     { row: 3, column: 6, side: ["top", "right"] },
   //   ]);
 
   //   // Third Rotation
   //   SShape.rotateLeft();
   //   expect(SShape.coordinates).toEqual([
   //     { row: 4, column: 5, side: ["right"] },
-  //     { row: 3, column: 5, side: ["right", "top"] },
+  //     { row: 5, column: 5, side: ["right", "bottom"] },
   //     { row: 4, column: 4, side: ["left"] },
-  //     { row: 5, column: 4, side: ["left", "bottom"] },
+  //     { row: 3, column: 4, side: ["left", "top"] },
   //   ]);
 
   //   // Fourth Rotation
   //   SShape.rotateLeft();
   //   expect(SShape.coordinates).toEqual([
   //     { row: 4, column: 5, side: ["top"] },
-  //     { row: 4, column: 4, side: ["top", "left"] },
+  //     { row: 4, column: 6, side: ["top", "right"] },
   //     { row: 5, column: 5, side: ["bottom"] },
-  //     { row: 5, column: 6, side: ["bottom", "right"] },
+  //     { row: 5, column: 4, side: ["bottom", "left"] },
   //   ]);
 });

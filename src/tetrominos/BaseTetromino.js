@@ -1,5 +1,19 @@
 export default class BaseTetromino {
-  constructor() {}
+  constructor() {
+    this.anchorPointDirection = "top";
+    this.nextRotationLeftMove = {
+      left: "bottom",
+      bottom: "right",
+      right: "top",
+      top: "left",
+    };
+    this.nextRotationRightMove = {
+      left: "top",
+      top: "right",
+      right: "bottom",
+      bottom: "left",
+    };
+  }
   moveDown() {
     this.coordinates = this.coordinates.map((coordinate) => {
       const { row } = coordinate;

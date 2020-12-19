@@ -249,6 +249,4 @@ export default class ZTetromino extends BaseTetromino {
       };
     });
   }
-
-  // Rotate Left
 }
