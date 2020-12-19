@@ -3,6 +3,8 @@ import ITetromino from "./tetrominos/ITetromino";
 import LTetromino from "./tetrominos/LTetromino";
 import JTetromino from "./tetrominos/JTetromino";
 import TTetromino from "./tetrominos/TTetromino";
+import ZTetromino from "./tetrominos/ZTetromino";
+import STetromino from "./tetrominos/STetromino";
 
 export default class Game {
   constructor(stage) {
@@ -29,6 +31,8 @@ export default class Game {
       new LTetromino(),
       new JTetromino(),
       new TTetromino(),
+      new ZTetromino(),
+      new STetromino(),
     ];
   }
 
@@ -90,7 +94,9 @@ export default class Game {
     // const newShape = new ITetromino();
     // const newShape = new LTetromino();
     // const newShape = new JTetromino();
-    const newShape = new TTetromino();
+    // const newShape = new TTetromino();
+    // const newShape = new ZTetromino();
+    const newShape = new STetromino();
     // const randomNum = Math.floor(Math.random() * this.allPieces.length);
     // const randdomShape = this.allPieces[randomNum];
     // const newShape = randdomShape;
