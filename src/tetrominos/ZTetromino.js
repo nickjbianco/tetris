@@ -11,23 +11,11 @@ export default class ZTetromino extends BaseTetromino {
     ];
     this.color = "red";
     this.anchorPointDirection = "top";
-    this.nextRotationLeftMove = {
-      left: "bottom",
-      bottom: "right",
-      right: "top",
-      top: "left",
-    };
     this.nextRotationLeftMoveMethod = {
       top: this.calcRotationTopToLeft.bind(this),
       left: this.calcRotationLeftToBottom.bind(this),
       bottom: this.calcRotationBottomToRight.bind(this),
       right: this.calcRotationRightToTop.bind(this),
-    };
-    this.nextRotationRightMove = {
-      left: "top",
-      top: "right",
-      right: "bottom",
-      bottom: "left",
     };
     this.nextRotationRightMoveMethod = {
       left: this.calcRotationLeftToTop.bind(this),
@@ -54,6 +42,20 @@ export default class ZTetromino extends BaseTetromino {
     );
 
     if (!bottomSpaceOpen) return false;
+
+    let sideSpaceOpen = false;
+    const anchorPiece = this.coordinates[0];
+    const { row, column } = anchorPiece;
+    if (anchorPiece.side.includes("top"))
+      return (sideSpaceOpen = gameBoard[row + 1][column - 1] === "black");
+    if (anchorPiece.side.includes("right"))
+      return (sideSpaceOpen = gameBoard[row + 1][column] === "black");
+    if (anchorPiece.side.includes("bottom"))
+      return (sideSpaceOpen = gameBoard[row][column - 1] === "black");
+    if (anchorPiece.side.includes("left"))
+      return (sideSpaceOpen = gameBoard[row + 1][column + 1] === "black");
+
+    return sideSpaceOpen;
   }
 
   // Rotate Left

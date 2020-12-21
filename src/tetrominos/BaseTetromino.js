@@ -1,6 +1,5 @@
 export default class BaseTetromino {
   constructor() {
-    this.anchorPointDirection = "top";
     this.nextRotationLeftMove = {
       left: "bottom",
       bottom: "right",

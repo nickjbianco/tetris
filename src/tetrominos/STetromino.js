@@ -10,6 +10,7 @@ export default class STetromino extends BaseTetromino {
       { row: 1, column: 4, side: ["bottom", "left"] },
     ];
     this.color = "pink";
+    this.anchorPointDirection = "top";
     this.nextRotationLeftMoveMethod = {
       top: this.calcRotationTopToLeft.bind(this),
       left: this.calcRotationLeftToBottom.bind(this),

@@ -11,23 +11,11 @@ export default class ITetromino extends BaseTetromino {
     ];
     this.anchorPointDirection = "left";
     this.color = "orange";
-    this.nextRotationRightMove = {
-      left: "top",
-      top: "right",
-      right: "bottom",
-      bottom: "left",
-    };
     this.nextRotationRightMoveMethod = {
       left: this.calcRotationLeftToTop.bind(this),
       top: this.calcRotationTopToRight.bind(this),
       right: this.calcRotationRightToBottom.bind(this),
       bottom: this.calcRotationBottomToLeft.bind(this),
-    };
-    this.nextRotationLeftMove = {
-      left: "bottom",
-      bottom: "right",
-      right: "top",
-      top: "left",
     };
     this.nextRotationLeftMoveMethod = {
       left: this.calcRotationLeftToBottom.bind(this),
