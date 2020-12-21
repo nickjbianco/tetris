@@ -95,8 +95,8 @@ export default class Game {
     // const newShape = new LTetromino();
     // // const newShape = new JTetromino();
     // const newShape = new TTetromino();
-    const newShape = new ZTetromino();
-    // const newShape = new STetromino();
+    // const newShape = new ZTetromino();
+    const newShape = new STetromino();
     // const randomNum = Math.floor(Math.random() * this.allPieces.length);
     // const randdomShape = this.allPieces[randomNum];
     // const newShape = randdomShape;
