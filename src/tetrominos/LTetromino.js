@@ -36,8 +36,11 @@ export default class LTetromino extends BaseTetromino {
       (bottomSideCoordinate) => {
         const { row, column } = bottomSideCoordinate;
         const nextRowDown = row + 1;
-        if (nextRowDown <= 19)
+        if (nextRowDown <= 19) {
           return gameBoard[nextRowDown][column] === "black";
+        } else {
+          return false;
+        }
       }
     );
 

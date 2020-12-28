@@ -70,10 +70,14 @@ export default class BaseTetromino {
   }
 
   clearCoordinates(rowIndices) {
+    const clearedCoordinates = this.determineCoordinatesToClear(rowIndices);
+
     this.coordinates = this.coordinates.filter((coordinate) => {
       const { row } = coordinate;
       return !rowIndices.includes(row);
     });
+
+    return clearedCoordinates;
   }
 
   determineCoordinatesToClear(rowIndices) {

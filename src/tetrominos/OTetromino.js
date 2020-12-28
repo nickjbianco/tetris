@@ -22,6 +22,8 @@ export default class OTetromino extends BaseTetromino {
       const nextRowDown = row + 1;
       if (nextRowDown <= 19) {
         return gameBoard[nextRowDown][column] === "black";
+      } else {
+        return false;
       }
     });
   }

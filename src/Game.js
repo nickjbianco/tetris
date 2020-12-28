@@ -90,18 +90,10 @@ export default class Game {
   }
 
   createNewPiece() {
-    // const newShape = new OTetromino();
-    // const newShape = new ITetromino();
-    // const newShape = new LTetromino();
-    // // const newShape = new JTetromino();
-    // const newShape = new TTetromino();
-    // const newShape = new ZTetromino();
-    const newShape = new STetromino();
-    // const randomNum = Math.floor(Math.random() * this.allPieces.length);
-    // const randdomShape = this.allPieces[randomNum];
-    // const newShape = randdomShape;
-    this.currentPiece = newShape;
-    this.droppedPieces.push(newShape);
+    const randomNum = Math.floor(Math.random() * this.allPieces.length);
+    const randomShape = this.allPieces[randomNum];
+    this.currentPiece = randomShape;
+    this.droppedPieces.push(randomShape);
   }
 
   calculateCompletedRows() {
@@ -124,12 +116,11 @@ export default class Game {
   }
 
   clearGameBoardRows(gameBoardRowIndices) {
+    debugger;
     this.droppedPieces.forEach((droppedPiece) => {
-      const clearedCoordinates = droppedPiece.determineCoordinatesToClear(
+      const clearedCoordinates = droppedPiece.clearCoordinates(
         gameBoardRowIndices
       );
-
-      droppedPiece.clearCoordinates(gameBoardRowIndices);
 
       clearedCoordinates.forEach((coordinate) => {
         const { row, column } = coordinate;
@@ -149,7 +140,7 @@ export default class Game {
       }
     });
 
-    this.render();
+    // this.render();
   }
 
   clearOldTetrominoPosition() {
@@ -227,6 +218,7 @@ export default class Game {
     if (!this.isCurrentPieceStuck()) return;
 
     const completedRows = this.calculateCompletedRows();
+
     if (completedRows.length > 0) {
       this.calculateScore();
       this.clearGameBoardRows(completedRows);
@@ -234,9 +226,12 @@ export default class Game {
     this.checkGameOver();
     this.createNewPiece();
     this.updateGrid();
-    setTimeout(() => {
-      this.render();
-    }, 300);
+    this.render();
+
+    // setTimeout(() => {
+    //   this.render();
+    // }, 300);
+
     console.log(this);
   }
 
