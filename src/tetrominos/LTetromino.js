@@ -32,21 +32,30 @@ export default class LTetromino extends BaseTetromino {
       coordinate.side.includes("bottom")
     );
 
-    return bottomSideCoordinates.every((bottomSideCoordinate) => {
-      const { row, column } = bottomSideCoordinate;
-      const nextRowDown = row + 1;
-      if (nextRowDown <= 19) {
-        return gameBoard[nextRowDown][column] === "black";
-      } else {
-        return false;
+    const bottomSpaceOpen = bottomSideCoordinates.every(
+      (bottomSideCoordinate) => {
+        const { row, column } = bottomSideCoordinate;
+        const nextRowDown = row + 1;
+        if (nextRowDown <= 19) {
+          return gameBoard[nextRowDown][column] === "black";
+        } else {
+          return false;
+        }
       }
-    });
+    );
+
+    if (!bottomSpaceOpen) return false;
 
     const anchorPiece = this.coordinates[0];
     const { row, column, side } = anchorPiece;
-    const [firstDirection] = side;
-    if (firstDirection === "right") {
+    const [firstDirection, secondDirection] = side;
+    if (firstDirection === "top" && secondDirection === "right") {
       return gameBoard[row + 1][column] === "black";
+    } else if (firstDirection === "right" && secondDirection === "bottom") {
+      return (
+        gameBoard[row][column - 1] === "black" &&
+        gameBoard[row][column - 2] === "black"
+      );
     } else {
       return true;
     }
