@@ -26,13 +26,13 @@ export default class Game {
     this.currentScore = 0;
     this.interval = setInterval(() => this.currentPieceDefaultMove(), 500);
     this.allPieces = [
-      new OTetromino(),
-      new ITetromino(),
-      new LTetromino(),
-      new JTetromino(),
-      new TTetromino(),
-      new ZTetromino(),
-      new STetromino(),
+      OTetromino,
+      ITetromino,
+      LTetromino,
+      JTetromino,
+      TTetromino,
+      ZTetromino,
+      STetromino,
     ];
   }
 
@@ -90,10 +90,13 @@ export default class Game {
   }
 
   createNewPiece() {
-    const randomNum = Math.floor(Math.random() * this.allPieces.length);
-    const randomShape = this.allPieces[randomNum];
-    this.currentPiece = randomShape;
-    this.droppedPieces.push(randomShape);
+    // const randomNum = Math.floor(Math.random() * this.allPieces.length);
+    // const randomShape = this.allPieces[randomNum];
+    // this.currentPiece = new randomShape();
+    // this.droppedPieces.push(this.currentPiece);
+    // // T Tetromino Test
+    this.currentPiece = new LTetromino();
+    this.droppedPieces.push(this.currentPiece);
   }
 
   calculateCompletedRows() {
@@ -116,7 +119,6 @@ export default class Game {
   }
 
   clearGameBoardRows(gameBoardRowIndices) {
-    debugger;
     this.droppedPieces.forEach((droppedPiece) => {
       const clearedCoordinates = droppedPiece.clearCoordinates(
         gameBoardRowIndices
@@ -127,7 +129,7 @@ export default class Game {
         this.gameBoard[row][column] = "black";
       });
 
-      while (droppedPiece.validMoveDown(this.gameBoard)) {
+      if (droppedPiece.validMoveDown(this.gameBoard)) {
         droppedPiece.coordinates.forEach((coordinate) => {
           const { row, column } = coordinate;
           this.gameBoard[row][column] = "black";
@@ -139,8 +141,6 @@ export default class Game {
         });
       }
     });
-
-    // this.render();
   }
 
   clearOldTetrominoPosition() {

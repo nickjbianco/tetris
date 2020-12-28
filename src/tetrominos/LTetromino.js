@@ -32,25 +32,30 @@ export default class LTetromino extends BaseTetromino {
       coordinate.side.includes("bottom")
     );
 
-    const bottomSpaceOpen = bottomSideCoordinates.every(
-      (bottomSideCoordinate) => {
-        const { row, column } = bottomSideCoordinate;
-        const nextRowDown = row + 1;
-        if (nextRowDown <= 19) {
-          return gameBoard[nextRowDown][column] === "black";
-        } else {
-          return false;
-        }
+    return bottomSideCoordinates.every((bottomSideCoordinate) => {
+      const { row, column } = bottomSideCoordinate;
+      const nextRowDown = row + 1;
+      if (nextRowDown <= 19) {
+        return gameBoard[nextRowDown][column] === "black";
+      } else {
+        return false;
       }
-    );
+    });
 
     const anchorPiece = this.coordinates[0];
-    const { row, column } = anchorPiece;
-    const nextAnchorPieceSpaceDown = anchorPiece.side.includes("right")
-      ? gameBoard[row + 1][column] === "black"
-      : true;
+    const { row, column, side } = anchorPiece;
+    const [firstDirection] = side;
+    if (firstDirection === "right") {
+      return gameBoard[row + 1][column] === "black";
+    } else {
+      return true;
+    }
 
-    return bottomSpaceOpen && nextAnchorPieceSpaceDown;
+    // const nextAnchorPieceSpaceDown = anchorPiece.side.includes("right")
+    //   ? gameBoard[row + 1][column] === "black"
+    //   : true;
+
+    // return bottomSpaceOpen && nextAnchorPieceSpaceDown;
   }
 
   //Rotate Right
