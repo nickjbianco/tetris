@@ -94,8 +94,8 @@ export default class Game {
     // const randomShape = this.allPieces[randomNum];
     // this.currentPiece = new randomShape();
     // this.droppedPieces.push(this.currentPiece);
-    // // T Tetromino Test
-    this.currentPiece = new LTetromino();
+    // // J Tetromino Test
+    this.currentPiece = new JTetromino();
     this.droppedPieces.push(this.currentPiece);
   }
 

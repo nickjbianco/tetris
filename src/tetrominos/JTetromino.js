@@ -44,13 +44,21 @@ export default class JTetromino extends BaseTetromino {
       }
     );
 
-    const anchorPiece = this.coordinates[0];
-    const { row, column } = anchorPiece;
-    const nextAnchorPieceSpaceDown = anchorPiece.side.includes("left")
-      ? gameBoard[row + 1][column] === "black"
-      : true;
+    if (!bottomSpaceOpen) return false;
 
-    return bottomSpaceOpen && nextAnchorPieceSpaceDown;
+    const anchorPiece = this.coordinates[0];
+    const { row, column, side } = anchorPiece;
+    const [firstDirection, secondDirection] = side;
+    if (firstDirection === "top" && secondDirection === "left") {
+      return gameBoard[row + 1][column] === "black";
+    } else if (firstDirection === "left" && secondDirection === "bottom") {
+      return (
+        gameBoard[row][column + 1] === "black" &&
+        gameBoard[row][column + 2] === "black"
+      );
+    } else {
+      return true;
+    }
   }
 
   // Rotate Right

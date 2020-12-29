@@ -59,12 +59,6 @@ export default class LTetromino extends BaseTetromino {
     } else {
       return true;
     }
-
-    // const nextAnchorPieceSpaceDown = anchorPiece.side.includes("right")
-    //   ? gameBoard[row + 1][column] === "black"
-    //   : true;
-
-    // return bottomSpaceOpen && nextAnchorPieceSpaceDown;
   }
 
   //Rotate Right

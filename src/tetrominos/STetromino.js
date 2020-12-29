@@ -46,19 +46,18 @@ export default class STetromino extends BaseTetromino {
 
     if (!bottomSpaceOpen) return false;
 
-    let sideSpaceOpen = false;
     const anchorPiece = this.coordinates[0];
-    const { row, column } = anchorPiece;
-    if (anchorPiece.side.includes("top"))
-      return (sideSpaceOpen = gameBoard[row + 1][column + 1] === "black");
-    if (anchorPiece.side.includes("right"))
-      return (sideSpaceOpen = gameBoard[row + 1][column - 1] === "black");
-    if (anchorPiece.side.includes("bottom"))
-      return (sideSpaceOpen = gameBoard[row][column + 1] === "black");
-    if (anchorPiece.side.includes("left"))
-      return (sideSpaceOpen = gameBoard[row + 1][column] === "black");
-
-    return sideSpaceOpen;
+    const { row, column, side } = anchorPiece;
+    const [firstDirection] = side;
+    if (firstDirection === "top") {
+      return gameBoard[row + 1][column + 1] === "black";
+    } else if (firstDirection === "right") {
+      return gameBoard[row + 1][column - 1] === "black";
+    } else if (firstDirection === "bottom") {
+      return gameBoard[row][column + 1] === "black";
+    } else if (firstDirection === "left") {
+      return gameBoard[row + 1][column] === "black";
+    }
   }
 
   // Rotate Left
@@ -159,7 +158,9 @@ export default class STetromino extends BaseTetromino {
   }
 
   // Rotate Right
-  rotateRight() {
+  rotateRight(gameBoard) {
+    if (!this.validRotateRight(gameBoard)) return false;
+
     this.coordinates = this.nextRotationRightMoveMethod[
       this.anchorPointDirection
     ]();
@@ -168,7 +169,25 @@ export default class STetromino extends BaseTetromino {
     ];
   }
 
-  validRotateRight() {}
+  validRotateRight(gameBoard) {
+    const coordinates = this.nextRotationRightMoveMethod[
+      this.anchorPointDirection
+    ]();
+
+    const onGameBoard = coordinates.every((coordinate) => {
+      const { row, column } = coordinate;
+      return row >= 0 && row <= 19 && column >= 0 && column <= 9;
+    });
+
+    if (!onGameBoard) return false;
+
+    const openSpaceOnGameBoard = coordinates.every((coordinate) => {
+      const { row, column } = coordinate;
+      return gameBoard[row][column] === "black";
+    });
+
+    return openSpaceOnGameBoard;
+  }
 
   calcRotationTopToRight() {
     const anchorPiece = this.coordinates[0];
