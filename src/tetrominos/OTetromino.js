@@ -14,9 +14,11 @@ export default class OTetromino extends BaseTetromino {
 
   validMoveDown(gameBoard) {
     if (this.coordinates.length === 0) return false;
+
     const bottomSideCoordinates = this.coordinates.filter((coordinate) =>
       coordinate.side.includes("bottom")
     );
+
     return bottomSideCoordinates.every((bottomSideCoordinate) => {
       const { row, column } = bottomSideCoordinate;
       const nextRowDown = row + 1;
