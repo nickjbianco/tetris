@@ -96,7 +96,7 @@ export default class Game {
     // this.currentPiece = new randomShape();
     // this.droppedPieces.push(this.currentPiece);
     // // // O Tetromino Test
-    this.currentPiece = new TTetromino();
+    this.currentPiece = new ITetromino();
     this.droppedPieces.push(this.currentPiece);
   }
 
@@ -130,7 +130,7 @@ export default class Game {
         this.gameBoard[row][column] = "black";
       });
 
-      if (droppedPiece.validMoveDown(this.gameBoard)) {
+      while (droppedPiece.validMoveDownAfterRowClear(this.gameBoard)) {
         droppedPiece.coordinates.forEach((coordinate) => {
           const { row, column } = coordinate;
           this.gameBoard[row][column] = "black";

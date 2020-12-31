@@ -12,6 +12,19 @@ export default class OTetromino extends BaseTetromino {
     this.color = "yellow";
   }
 
+  validMoveDownAfterRowClear(gameBoard) {
+    if (this.coordinates.length === 2) {
+      const anchorPiece = this.coordinates[0];
+      const { row, column } = anchorPiece;
+      return (
+        gameBoard[row + 1][column] === "black" &&
+        gameBoard[row + 1][column + 1] === "black"
+      );
+    } else {
+      return this.validMoveDown(gameBoard);
+    }
+  }
+
   validMoveDown(gameBoard) {
     if (this.coordinates.length === 0) return false;
 
@@ -19,15 +32,19 @@ export default class OTetromino extends BaseTetromino {
       coordinate.side.includes("bottom")
     );
 
-    return bottomSideCoordinates.every((bottomSideCoordinate) => {
-      const { row, column } = bottomSideCoordinate;
-      const nextRowDown = row + 1;
-      if (nextRowDown <= 19) {
-        return gameBoard[nextRowDown][column] === "black";
-      } else {
-        return false;
+    const bottomSpaceOpen = bottomSideCoordinates.every(
+      (bottomSideCoordinate) => {
+        const { row, column } = bottomSideCoordinate;
+        const nextRowDown = row + 1;
+        if (nextRowDown <= 19) {
+          return gameBoard[nextRowDown][column] === "black";
+        } else {
+          return false;
+        }
       }
-    });
+    );
+
+    return bottomSpaceOpen;
   }
 
   rotateRight() {}

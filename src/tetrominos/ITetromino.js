@@ -25,6 +25,18 @@ export default class ITetromino extends BaseTetromino {
     };
   }
 
+  validMoveDownAfterRowClear(gameBoard) {
+    const coordinatesLength = this.coordinates.length;
+    if (coordinatesLength >= 1 && coordinatesLength <= 3) {
+      const anchorPiece = this.coordinates[0];
+      const { row, column } = anchorPiece;
+      if (row + coordinatesLength <= 19)
+        return gameBoard[row + coordinatesLength][column] === "black";
+    } else {
+      return this.validMoveDown(gameBoard);
+    }
+  }
+
   validMoveDown(gameBoard) {
     if (this.coordinates.length === 0) return false;
 
@@ -32,15 +44,19 @@ export default class ITetromino extends BaseTetromino {
       coordinate.side.includes("bottom")
     );
 
-    return bottomSideCoordinates.every((bottomSideCoordinate) => {
-      const { row, column } = bottomSideCoordinate;
-      const nextRowDown = row + 1;
-      if (nextRowDown <= 19) {
-        return gameBoard[nextRowDown][column] === "black";
-      } else {
-        return false;
+    const bottomSpaceOpen = bottomSideCoordinates.every(
+      (bottomSideCoordinate) => {
+        const { row, column } = bottomSideCoordinate;
+        const nextRowDown = row + 1;
+        if (nextRowDown <= 19) {
+          return gameBoard[nextRowDown][column] === "black";
+        } else {
+          return false;
+        }
       }
-    });
+    );
+
+    return bottomSpaceOpen;
   }
 
   // Left Rotation
