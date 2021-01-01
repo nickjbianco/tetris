@@ -23,6 +23,95 @@ export default class JTetromino extends BaseTetromino {
       right: this.calcRotationRightToBottom.bind(this),
       bottom: this.calcRotationBottomToLeft.bind(this),
     };
+    this.determineValidMoveDownAfterRowClear = {
+      1: this.oneCoordinate.bind(this),
+      2: this.twoCoordinates.bind(this),
+      3: this.threeCoordinates.bind(this),
+      4: this.validMoveDown.bind(this),
+    };
+  }
+
+  isRowBelowClear(gameBoard, coordinates = this.coordinates) {
+    return coordinates.every((coordinate) => {
+      const { row, column } = coordinate;
+      if (row + 1 <= 19) {
+        return gameBoard[row + 1][column] === "black";
+      } else {
+        return false;
+      }
+    });
+  }
+
+  validMoveDownAfterRowClear(gameBoard) {
+    const coordinatesLength = this.coordinates.length;
+    return this.determineValidMoveDownAfterRowClear[coordinatesLength](
+      gameBoard
+    );
+  }
+
+  oneCoordinate(gameBoard) {
+    return this.isRowBelowClear(gameBoard);
+  }
+
+  twoCoordinates(gameBoard) {
+    const isHorizontal = this.coordinates.every(
+      (coordinate) =>
+        coordinate.side.includes("top") || coordinate.side.includes("bottom")
+    );
+
+    if (isHorizontal) {
+      return this.isRowBelowClear(gameBoard);
+    } else {
+      let lowestRow = 0;
+      let currentColumn = 0;
+      this.coordinates.forEach((coordinate) => {
+        const { row, column } = coordinate;
+        if (row >= lowestRow) {
+          lowestRow = row;
+          currentColumn = column;
+        }
+      });
+      if (lowestRow + 1 <= 19)
+        return gameBoard[lowestRow + 1][currentColumn] === "black";
+    }
+  }
+
+  threeCoordinates(gameBoard) {
+    const isHorizontal = this.coordinates.every(
+      (coordinate) =>
+        coordinate.side.includes("top") || coordinate.side.includes("bottom")
+    );
+
+    const isSeperate = () => {
+      const anchorPiece = this.coordinates[0];
+      const { row, column, side } = anchorPiece;
+      if (side.includes("top")) {
+        return gameBoard[row + 1][column + 1] === "black";
+      } else if (side.includes("bottom")) {
+        return gameBoard[row - 1][column - 1] === "black";
+      }
+    };
+
+    if (isHorizontal) {
+      return this.isRowBelowClear(gameBoard);
+    } else {
+      const anchorPiece = this.coordinates[0];
+      const { row, column, side } = anchorPiece;
+      if (!isSeperate()) {
+        if (row + 2 <= 19) return gameBoard[row + 2][column + 1] === "black";
+      } else {
+        const coordinatesToMoveDown = [];
+        const leaderPiece = this.coordinates[1];
+        const anchorPiece = this.coordinates[2];
+        if (leaderPiece.row - anchorPiece.row > 0) {
+          coordinatesToMoveDown.push(this.coordinates[2]);
+        } else {
+          coordinatesToMoveDown.push(this.coordinates[0]);
+          coordinatesToMoveDown.push(this.coordinates[1]);
+        }
+        this.moveDown(coordinatesToMoveDown);
+      }
+    }
   }
 
   validMoveDown(gameBoard) {
@@ -32,16 +121,9 @@ export default class JTetromino extends BaseTetromino {
       coordinate.side.includes("bottom")
     );
 
-    const bottomSpaceOpen = bottomSideCoordinates.every(
-      (bottomSideCoordinate) => {
-        const { row, column } = bottomSideCoordinate;
-        const nextRowDown = row + 1;
-        if (nextRowDown <= 19) {
-          return gameBoard[nextRowDown][column] === "black";
-        } else {
-          return false;
-        }
-      }
+    const bottomSpaceOpen = this.isRowBelowClear(
+      gameBoard,
+      bottomSideCoordinates
     );
 
     if (!bottomSpaceOpen) return false;

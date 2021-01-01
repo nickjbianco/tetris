@@ -13,8 +13,8 @@ export default class BaseTetromino {
       bottom: "left",
     };
   }
-  moveDown() {
-    this.coordinates = this.coordinates.map((coordinate) => {
+  moveDown(coordinates = this.coordinates) {
+    this.coordinates = coordinates.map((coordinate) => {
       const { row } = coordinate;
       return {
         ...coordinate,
