@@ -24,6 +24,7 @@ export default class JTetromino extends BaseTetromino {
       bottom: this.calcRotationBottomToLeft.bind(this),
     };
     this.determineValidMoveDownAfterRowClear = {
+      0: this.validMoveDown.bind(this),
       1: this.oneCoordinate.bind(this),
       2: this.twoCoordinates.bind(this),
       3: this.threeCoordinates.bind(this),
@@ -92,11 +93,12 @@ export default class JTetromino extends BaseTetromino {
       }
     };
 
+    //
     if (isHorizontal) {
       return this.isRowBelowClear(gameBoard);
     } else {
       const anchorPiece = this.coordinates[0];
-      const { row, column, side } = anchorPiece;
+      const { row, column } = anchorPiece;
       if (!isSeperate()) {
         if (row + 2 <= 19) return gameBoard[row + 2][column + 1] === "black";
       } else {
@@ -112,6 +114,7 @@ export default class JTetromino extends BaseTetromino {
         this.moveDown(coordinatesToMoveDown);
       }
     }
+    //
   }
 
   validMoveDown(gameBoard) {
