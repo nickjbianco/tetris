@@ -23,6 +23,118 @@ export default class LTetromino extends BaseTetromino {
       right: this.calcRotationRightToBottom.bind(this),
       bottom: this.calcRotationBottomToLeft.bind(this),
     };
+    this.determineValidMoveDownAfterRowClear = {
+      0: this.validMoveDown.bind(this),
+      1: this.oneCoordinate.bind(this),
+      2: this.twoCoordinates.bind(this),
+      3: this.threeCoordinates.bind(this),
+      4: this.validMoveDown.bind(this),
+    };
+  }
+
+  isRowBelowClear(gameBoard, coordinates = this.coordinates) {
+    return coordinates.every((coordinate) => {
+      const { row, column } = coordinate;
+      if (row + 1 <= 19) {
+        return gameBoard[row + 1][column] === "black";
+      } else {
+        return false;
+      }
+    });
+  }
+
+  validMoveDownAfterRowClear(gameBoard) {
+    const coordinatesLength = this.coordinates.length;
+    return this.determineValidMoveDownAfterRowClear[coordinatesLength](
+      gameBoard
+    );
+  }
+
+  oneCoordinate(gameBoard) {
+    return this.isRowBelowClear(gameBoard);
+  }
+
+  twoCoordinates(gameBoard) {
+    const isHorizontal = this.coordinates.every(
+      (coordinate) =>
+        coordinate.side.includes("top") || coordinate.side.includes("bottom")
+    );
+
+    if (isHorizontal) return this.isRowBelowClear(gameBoard);
+
+    let lowestRow = 0;
+    let currentColumn = 0;
+    this.coordinates.forEach((coordinate) => {
+      const { row, column } = coordinate;
+      if (row >= lowestRow) {
+        lowestRow = row;
+        currentColumn = column;
+      }
+    });
+
+    if (lowestRow + 1 <= 19) {
+      return gameBoard[lowestRow + 1][currentColumn] === "black";
+    } else {
+      return false;
+    }
+  }
+
+  threeCoordinates(gameBoard) {
+    const isHorizontal = this.coordinates.every(
+      (coordinate) =>
+        coordinate.side.includes("top") || coordinate.side.includes("bottom")
+    );
+
+    if (isHorizontal) return this.isRowBelowClear(gameBoard);
+
+    // this needs work
+    const anchorPiece = this.coordinates[0];
+    const { row, column, side } = anchorPiece;
+
+    const isSeperate = () => {
+      if (side.includes("top")) {
+        return gameBoard[row + 1][column - 1] === "black";
+      } else if (side.includes("bottom")) {
+        return gameBoard[row - 1][column + 1] === "black";
+      }
+    };
+
+    if (!isSeperate() && side.includes("bottom")) {
+      return (
+        row + 1 <= 19 &&
+        gameBoard[row + 1][column] === "black" &&
+        gameBoard[row + 1][column + 1] === "black"
+      );
+    } else if (!isSeperate() && side.includes("top")) {
+      return (
+        row + 2 <= 19 &&
+        gameBoard[row + 1][column] === "black" &&
+        gameBoard[row + 2][column - 1] === "black"
+      );
+    } else if (isSeperate() && side.includes("bottom")) {
+      compressSeperatedPiece("bottom");
+      return (
+        row + 1 <= 19 &&
+        gameBoard[row + 1][column] === "black" &&
+        gameBoard[row + 1][column + 1] === "black"
+      );
+    } else if (isSeperate() && side.includes("top")) {
+      compressSeperatedPiece("top");
+      // check if row below is clear
+    }
+  }
+
+  compressSeperatedPiece(anchorDirection) {
+    if (anchorDirection === "bottom") {
+      this.coordinates = this.coordinates.map((coordinate, idx) => {
+        if (idx === 2) {
+        }
+      });
+    } else if (anchorDirection === "top") {
+      // this.coordinates = this.coordinates.forEach((coordinate, idx) => {
+      //   this.moveDown(coordinate);
+      // });
+    }
   }
 
   validMoveDown(gameBoard) {
@@ -32,16 +144,9 @@ export default class LTetromino extends BaseTetromino {
       coordinate.side.includes("bottom")
     );
 
-    const bottomSpaceOpen = bottomSideCoordinates.every(
-      (bottomSideCoordinate) => {
-        const { row, column } = bottomSideCoordinate;
-        const nextRowDown = row + 1;
-        if (nextRowDown <= 19) {
-          return gameBoard[nextRowDown][column] === "black";
-        } else {
-          return false;
-        }
-      }
+    const bottomSpaceOpen = this.isRowBelowClear(
+      gameBoard,
+      bottomSideCoordinates
     );
 
     if (!bottomSpaceOpen) return false;
