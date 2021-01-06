@@ -12,15 +12,6 @@ window.init = () => {
   newGame.updateGrid();
   newGame.render();
 
-  // show the score
-  newGame.calculateScore();
-  const scoreHeader = document.createElement("h1");
-  const scoreMessage = document.createTextNode(
-    `Score: ${newGame.currentScore}`
-  );
-  scoreHeader.appendChild(scoreMessage);
-  document.body.appendChild(scoreHeader);
-
   // pause the game
   const pauseButton = document.createElement("button");
   pauseButton.innerHTML = "PAUSE GAME";

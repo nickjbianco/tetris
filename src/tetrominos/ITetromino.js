@@ -23,18 +23,58 @@ export default class ITetromino extends BaseTetromino {
       right: this.calcRotationRightToTop.bind(this),
       top: this.calcRotationTopToLeft.bind(this),
     };
+    this.determineValidMoveDownAfterRowClear = {
+      0: this.validMoveDown.bind(this),
+      1: this.oneCoordinate.bind(this),
+      2: this.twoCoordinates.bind(this),
+      3: this.threeCoordinates.bind(this),
+      4: this.validMoveDown.bind(this),
+    };
+  }
+
+  isPieceIntact() {
+    return this.coordinates
+      .slice(0, this.coordinates.length - 1)
+      .every((coordinate, idx) => {
+        const nextCoordinate = this.coordinates[idx + 1];
+        const rowDifference = coordinate.row - nextCoordinate.row;
+        return rowDifference === 1 || rowDifference === -1;
+      });
+  }
+
+  oneCoordinate(gameBoard) {
+    return this.isRowBelowClear(gameBoard);
+  }
+
+  twoCoordinates(gameBoard) {
+    let lowestRow = 0;
+    let currColumn = 0;
+    this.coordinates.forEach((coordinate) => {
+      const { row, column } = coordinate;
+      if (row > lowestRow) {
+        lowestRow = row;
+        currColumn = column;
+      }
+    });
+    return (
+      lowestRow + 1 <= 19 && gameBoard[lowestRow + 1][currColumn] === "black"
+    );
+  }
+
+  threeCoordinates() {}
+
+  isRowBelowClear(gameBoard, coordinates = this.coordinates) {
+    return coordinates.every((coordinate) => {
+      const { row, column } = coordinate;
+      return row + 1 <= 19 && gameBoard[row + 1][column] === "black";
+    });
   }
 
   validMoveDownAfterRowClear(gameBoard) {
     const coordinatesLength = this.coordinates.length;
-    if (coordinatesLength >= 1 && coordinatesLength <= 3) {
-      const anchorPiece = this.coordinates[0];
-      const { row, column } = anchorPiece;
-      if (row + coordinatesLength <= 19)
-        return gameBoard[row + coordinatesLength][column] === "black";
-    } else {
-      return this.validMoveDown(gameBoard);
-    }
+    return this.determineValidMoveDownAfterRowClear[coordinatesLength](
+      gameBoard
+    );
   }
 
   validMoveDown(gameBoard) {

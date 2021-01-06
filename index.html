@@ -9,9 +9,18 @@
     <link rel="stylesheet" href="./index.css" />
   </head>
 
-  <body>
-    <canvas id="tetris" width="300" height="600"></canvas>
-    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-    <script src="./dist/main.js"></script>
+  <body id="body">
+    <div id="mainWrapper">
+      <div id="title">
+        <h1>Tetris</h1>
+      </div>
+      <div id="canvas">
+        <canvas id="tetris" width="300" height="600"></canvas>
+      </div>
+      <div id="code">
+        <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+        <script src="./dist/main.js"></script>
+      </div>
+    </div>
   </body>
 </html>

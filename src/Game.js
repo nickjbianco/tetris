@@ -90,12 +90,10 @@ export default class Game {
   }
 
   createNewPiece() {
-    // // Full Game
-    // const randomNum = Math.floor(Math.random() * this.allPieces.length);
-    // const randomShape = this.allPieces[randomNum];
-    // this.currentPiece = new randomShape();
-    // this.droppedPieces.push(this.currentPiece);
-    this.currentPiece = new LTetromino();
+    // Full Game
+    const randomNum = Math.floor(Math.random() * this.allPieces.length);
+    const randomShape = this.allPieces[randomNum];
+    this.currentPiece = new randomShape();
     this.droppedPieces.push(this.currentPiece);
   }
 

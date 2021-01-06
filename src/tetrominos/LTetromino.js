@@ -87,7 +87,6 @@ export default class LTetromino extends BaseTetromino {
 
     if (isHorizontal) return this.isRowBelowClear(gameBoard);
 
-    // this needs work
     const anchorPiece = this.coordinates[0];
     const { row, column, side } = anchorPiece;
 
@@ -112,29 +111,38 @@ export default class LTetromino extends BaseTetromino {
         gameBoard[row + 2][column - 1] === "black"
       );
     } else if (isSeperate() && side.includes("bottom")) {
-      compressSeperatedPiece("bottom");
-      return (
-        row + 1 <= 19 &&
-        gameBoard[row + 1][column] === "black" &&
-        gameBoard[row + 1][column + 1] === "black"
-      );
+      compressSeperatedBottomPiece();
+      return this.validMoveDown(gameBoard);
     } else if (isSeperate() && side.includes("top")) {
-      compressSeperatedPiece("top");
-      // check if row below is clear
+      compressSeperatedTopPiece();
+      return this.validMoveDown(gameBoard);
     }
   }
 
-  compressSeperatedPiece(anchorDirection) {
-    if (anchorDirection === "bottom") {
-      this.coordinates = this.coordinates.map((coordinate, idx) => {
-        if (idx === 2) {
-        }
-      });
-    } else if (anchorDirection === "top") {
-      // this.coordinates = this.coordinates.forEach((coordinate, idx) => {
-      //   this.moveDown(coordinate);
-      // });
-    }
+  compressSeperatedBottomPiece() {
+    this.coordinates = this.coordinates.map((coordinate, idx) => {
+      if (idx === 2) {
+        return {
+          ...coordinate,
+          row: coordinate.row + 1,
+        };
+      } else {
+        return coordinate;
+      }
+    });
+  }
+
+  compressSeperatedTopPiece() {
+    this.coordinates = this.coordinates.map((coordinate, idx) => {
+      if (idx < 2) {
+        return {
+          ...coordinate,
+          row: coordinate.row + 1,
+        };
+      } else {
+        return coordinate;
+      }
+    });
   }
 
   validMoveDown(gameBoard) {

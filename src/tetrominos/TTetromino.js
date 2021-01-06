@@ -23,7 +23,40 @@ export default class TTetromino extends BaseTetromino {
       right: this.calcRotationRightToBottom.bind(this),
       bottom: this.calcRotationBottomToLeft.bind(this),
     };
+    this.determineValidMoveDownAfterRowClear = {
+      0: this.validMoveDown.bind(this),
+      1: this.oneCoordinate.bind(this),
+      2: this.twoCoordinates.bind(this),
+      3: this.threeCoordinates.bind(this),
+      4: this.validMoveDown.bind(this),
+    };
   }
+
+  isRowBelowClear(gameBoard, coordinates = this.coordinates) {
+    return coordinates.every((coordinate) => {
+      const { row, column } = coordinate;
+      if (row + 1 <= 19) {
+        return gameBoard[row + 1][column] === "black";
+      } else {
+        return false;
+      }
+    });
+  }
+
+  validMoveDownAfterRowClear(gameBoard) {
+    const coordinatesLength = this.coordinates.length;
+    return this.determineValidMoveDownAfterRowClear[coordinatesLength](
+      gameBoard
+    );
+  }
+
+  oneCoordinate(gameBoard) {
+    return this.isRowBelowClear(gameBoard);
+  }
+
+  twoCoordinates(gameBoard) {}
+
+  threeCoordinates() {}
 
   validMoveDown(gameBoard) {
     if (this.coordinates.length === 0) return false;

@@ -80,40 +80,72 @@ export default class JTetromino extends BaseTetromino {
   }
 
   threeCoordinates(gameBoard) {
+    const anchorPiece = this.coordinates[0];
+    const { row, column, side } = anchorPiece;
+
     const isHorizontal = this.coordinates.every(
       (coordinate) =>
         coordinate.side.includes("top") || coordinate.side.includes("bottom")
     );
 
-    // this needs work
-    const isSeperate = () => {
-      const anchorPiece = this.coordinates[0];
-      const { row, column, side } = anchorPiece;
-      if (side.includes("top")) {
-        return gameBoard[row + 1][column + 1] === "black";
-      } else if (side.includes("bottom")) {
-        return gameBoard[row - 1][column - 1] === "black";
-      }
-    };
-
     if (isHorizontal) return this.isRowBelowClear(gameBoard);
 
-    const anchorPiece = this.coordinates[0];
-    const { row, column } = anchorPiece;
-    const leaderPiece = this.coordinates[1];
-    const followerPiece = this.coordinates[2];
-
-    if (!isSeperate() && row + 2 <= 19)
-      return gameBoard[row + 2][column + 1] === "black";
-
-    const coordinatesToMoveDown = [];
-    if (leaderPiece.row - followerPiece.row > 0) {
-      coordinatesToMoveDown.push(followerPiece);
-    } else {
-      coordinatesToMoveDown.push(anchorPiece);
-      coordinatesToMoveDown.push(leaderPiece);
+    if (!this.isPieceSeperated(gameBoard) && side.includes("bottom")) {
+      return (
+        row + 1 <= 19 &&
+        gameBoard[row + 1][column] === "black" &&
+        gameBoard[row + 1][column + 1] === "black"
+      );
+    } else if (!this.isPieceSeperated(gameBoard) && side.includes("top")) {
+      return (
+        row + 2 <= 19 &&
+        gameBoard[row + 1][column] === "black" &&
+        gameBoard[row + 2][column + 1] === "black"
+      );
+    } else if (this.isPieceSeperated(gameBoard) && side.includes("bottom")) {
+      compressSeperatedBottomPiece();
+      return this.validMoveDown(gameBoard);
+    } else if (this.isPieceSeperated(gameBoard) && side.includes("top")) {
+      compressSeperatedTopPiece();
+      return this.validMoveDown(gameBoard);
     }
-    this.moveDown(coordinatesToMoveDown);
+  }
+
+  isPieceSeperated(gameBoard) {
+    const anchorPiece = this.coordinates[0];
+    const { row, column, side } = anchorPiece;
+
+    if (side.includes("top")) {
+      return gameBoard[row + 1][column + 1] === "black";
+    } else if (side.includes("bottom")) {
+      return gameBoard[row - 1][column - 1] === "black";
+    }
+  }
+
+  compressSeperatedBottomPiece() {
+    this.coordinates = this.coordinates.map((coordinate, idx) => {
+      if (idx === 2) {
+        return {
+          ...coordinate,
+          row: coordinate.row + 1,
+        };
+      } else {
+        return coordinate;
+      }
+    });
+  }
+
+  compressSeperatedTopPiece() {
+    this.coordinates = this.coordinates.map((coordinate, idx) => {
+      if (idx < 2) {
+        return {
+          ...coordinate,
+          row: coordinate.row + 1,
+        };
+      } else {
+        return coordinate;
+      }
+    });
   }
 
   validMoveDown(gameBoard) {
