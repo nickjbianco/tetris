@@ -10,9 +10,36 @@
   </head>
 
   <body id="body">
-    <div id="mainWrapper">
-      <div id="title">
-        <h1>Tetris</h1>
+    <div id="title">
+      <h1>Tetris</h1>
+    </div>
+    <div id="main-wrapper">
+      <div id="instructions">
+        <div>
+          <h1>Welcome!</h1>
+          <p>
+            Tetris is a popular tile matching game developed by Alexey Pajitnov
+            in 1984 in Moscow. Try and get the highest score you can!
+          </p>
+        </div>
+        <div>
+          <h1>Instructions</h1>
+          <p>
+            There are 7 tiles called 'Tetrominos' that the user can move across
+            the screen as well as rotate. The goal of the game is to bring the
+            tiles down to the bottom of the screen gaining points by clearing
+            rows. Left arrow key moves left, right arrow key moves right, down
+            key moves the piece down quicker, up rotates the piece to the right,
+            and the x key rotates the piece to the left.
+          </p>
+        </div>
+        <div>
+          <h1>About</h1>
+          <p>
+            Tetris is built using Easel.js, a library for interacting with
+            HTML5's canvas element.
+          </p>
+        </div>
       </div>
       <div id="canvas">
         <canvas id="tetris" width="300" height="600"></canvas>
