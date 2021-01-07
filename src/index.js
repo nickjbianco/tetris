@@ -13,10 +13,11 @@ window.init = () => {
   newGame.render();
 
   // pause the game
+  const instructionsBox = document.getElementById("instructions");
   const pauseButton = document.createElement("button");
   pauseButton.innerHTML = "PAUSE GAME";
   pauseButton.addEventListener("click", () => newGame.pauseGame());
-  document.body.appendChild(pauseButton);
+  instructionsBox.appendChild(pauseButton);
 
   // handle a key press
   if (!newGame.gameOver || !newGame.gamePaused)
