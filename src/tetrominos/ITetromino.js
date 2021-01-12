@@ -42,6 +42,8 @@ export default class ITetromino extends BaseTetromino {
       });
   }
 
+  compressPiece() {}
+
   oneCoordinate(gameBoard) {
     return this.isRowBelowClear(gameBoard);
   }
@@ -61,7 +63,10 @@ export default class ITetromino extends BaseTetromino {
     );
   }
 
-  threeCoordinates() {}
+  threeCoordinates(gameBoard) {
+    // if (!this.isPieceIntact()) this.compressPiece();
+    return this.twoCoordinates(gameBoard);
+  }
 
   isRowBelowClear(gameBoard, coordinates = this.coordinates) {
     return coordinates.every((coordinate) => {
