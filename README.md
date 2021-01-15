@@ -17,3 +17,17 @@ Play Live: https://nickjbianco.github.io/tetris/
 
 - Dynamic movement of pieces across board with Easel.js
 - ES6 logic to render grid, move piece, and check for row completion.
+
+# Sample Code
+
+```javascript
+  calcRotationLeftToBottom() {
+    const anchorPiece = this.coordinates[0];
+    const { row, column } = anchorPiece;
+    return this.coordinates.map((piece, idx) => ({
+      column,
+      row: row - idx,
+      side: piece.side.map((direction) => this.nextRotationLeftMove[direction]),
+    }));
+  }
+```
