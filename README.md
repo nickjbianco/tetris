@@ -31,3 +31,7 @@ Play Live: https://nickjbianco.github.io/tetris/
     }));
   }
 ```
+
+# Gameplay
+
+![LiveGameplay](/screenshots/LiveGameplay.png)
