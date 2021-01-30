@@ -94,7 +94,6 @@ export default class Game {
     const randomNum = Math.floor(Math.random() * this.allPieces.length);
     const randomShape = this.allPieces[randomNum];
     this.currentPiece = new randomShape();
-    // this.currentPiece = new ITetromino();
     this.droppedPieces.push(this.currentPiece);
   }
 
